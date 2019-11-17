@@ -1,0 +1,6 @@
+framework module JJCollectionViewRoundFlowLayout_Swift {
+  umbrella header "JJCollectionViewRoundFlowLayout_Swift-umbrella.h"
+
+  export *
+  module * { export * }
+}
