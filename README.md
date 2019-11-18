@@ -175,23 +175,6 @@ func collectionView(_ collectionView: UICollectionView, layout collectionViewLay
   
 ``` swift
 
-- (JJCollectionViewRoundConfigModel *)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout configModelForSectionAtIndex:(NSInteger)section{
-    JJCollectionViewRoundConfigModel *model = [[JJCollectionViewRoundConfigModel alloc]init];
-    
-    model.backgroundColor = [UIColor colorWithRed:233/255.0 green:233/255.0 blue:233/255.0 alpha:1.0];
-    model.cornerRadius = 10;
-    
-    if (section == 0) {
-        model.backgroundColor = [UIColor colorWithRed:233/255.0 green:233/255.0 blue:233/255.0 alpha:1.0];
-    }else if(section == 1){
-        model.backgroundColor = [UIColor colorWithRed:100/255.0 green:233/255.0 blue:233/255.0 alpha:1.0];
-    }else{
-        //...
-    }
-    
-    return model;
-}
-
 func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, configModelForSectionAtIndex section: Int) -> JJCollectionViewRoundConfigModel_Swift {
     let model = JJCollectionViewRoundConfigModel_Swift.init();
     model.cornerRadius = 10
