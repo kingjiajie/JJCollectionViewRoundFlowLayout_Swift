@@ -38,8 +38,17 @@ extension JJCollectionViewRoundFlowLayout_Swift{
 }
 
 @objc public protocol JJCollectionViewDelegateRoundFlowLayout_Swift : UICollectionViewDelegateFlowLayout{
+    
+    /// 设置底色偏移量(该设置只设置底色，与collectionview原sectioninsets区分）
+    /// - Parameter collectionView: collectionView description
+    /// - Parameter collectionViewLayout: collectionViewLayout description
+    /// - Parameter section: section description
     func collectionView(_ collectionView : UICollectionView , layout collectionViewLayout:UICollectionViewLayout,borderEdgeInsertsForSectionAtIndex section : Int) -> UIEdgeInsets;
     
+    /// 设置底色相关
+    /// - Parameter collectionView: collectionView description
+    /// - Parameter collectionViewLayout: collectionViewLayout description
+    /// - Parameter section: section description
     func collectionView(_ collectionView : UICollectionView, layout collectionViewLayout : UICollectionViewLayout , configModelForSectionAtIndex section : Int ) -> JJCollectionViewRoundConfigModel_Swift;
 }
 
