@@ -32,7 +32,9 @@ TODO: JJCollectionViewRoundFlowLayout_Swift是JJCollectionViewRoundFlowLayout（
   s.source_files = 'JJCollectionViewRoundFlowLayout_Swift/Classes/**/*'
   
   s.frameworks       = 'UIKit'
-  s.swift_versions   = ['4.2', '5.0']
+  if s.respond_to? 'swift_version'
+      s.swift_versions   = ['4.2', '5.0']
+  end
   s.ios.deployment_target = '9.0'
   
   # s.resource_bundles = {
