@@ -47,7 +47,7 @@ class SecondViewController: UIViewController {
     }
     
     func initialization() {
-        self.navigationController?.title = "JJCollectionViewRoundFlowLayout_Swift";
+        self.navigationItem.title = "JJCollectionViewRoundFlowLayout_Swift";
         self.view.backgroundColor = UIColor.init(white: 1.0, alpha: 1.0)
         self.initSetup();
         self.initLayout();

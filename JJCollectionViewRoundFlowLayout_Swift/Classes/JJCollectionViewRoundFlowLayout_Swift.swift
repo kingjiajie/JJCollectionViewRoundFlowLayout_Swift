@@ -89,7 +89,7 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                 if isCalculateHeader {
                     let headerAttr = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath.init(row: 0, section: section))
                     if headerAttr != nil &&
-                        (headerAttr?.frame.size.width != 0 ||
+                        (headerAttr?.frame.size.width != 0 || 
                             headerAttr?.frame.size.height != 0){
                         firstAttr = headerAttr!;
                     }else{

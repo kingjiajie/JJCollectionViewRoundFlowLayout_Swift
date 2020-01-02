@@ -12,6 +12,7 @@
 		042FEAAB238204E5000F73ED /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042FEAA6238204E5000F73ED /* SecondViewController.swift */; };
 		042FEAAC238204E5000F73ED /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042FEAA7238204E5000F73ED /* NextViewController.swift */; };
 		042FEAAD238204E5000F73ED /* MyCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042FEAA8238204E5000F73ED /* MyCollectionReusableView.swift */; };
+		0434FE1D23BD98EE0094B247 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0434FE1C23BD98EE0094B247 /* ThirdViewController.swift */; };
 		37F3E3CC11D28F983A3FEE06 /* Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11512C0B1DF9F20F73A3765F /* Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -38,6 +39,7 @@
 		042FEAA6238204E5000F73ED /* SecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		042FEAA7238204E5000F73ED /* NextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 		042FEAA8238204E5000F73ED /* MyCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCollectionReusableView.swift; sourceTree = "<group>"; };
+		0434FE1C23BD98EE0094B247 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		11512C0B1DF9F20F73A3765F /* Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CDE4D46CCB2623C8E330E6C /* Pods-JJCollectionViewRoundFlowLayout_Swift_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JJCollectionViewRoundFlowLayout_Swift_Example.debug.xcconfig"; path = "Target Support Files/Pods-JJCollectionViewRoundFlowLayout_Swift_Example/Pods-JJCollectionViewRoundFlowLayout_Swift_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* JJCollectionViewRoundFlowLayout_Swift_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JJCollectionViewRoundFlowLayout_Swift_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +133,7 @@
 				042FEAA4238204E4000F73ED /* MyCollectionViewFlowLayout.swift */,
 				042FEAA7238204E5000F73ED /* NextViewController.swift */,
 				042FEAA6238204E5000F73ED /* SecondViewController.swift */,
+				0434FE1C23BD98EE0094B247 /* ThirdViewController.swift */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -370,6 +373,7 @@
 				042FEAA9238204E5000F73ED /* MyCollectionViewFlowLayout.swift in Sources */,
 				042FEAAA238204E5000F73ED /* MyCollectionViewCell.swift in Sources */,
 				042FEAAB238204E5000F73ED /* SecondViewController.swift in Sources */,
+				0434FE1D23BD98EE0094B247 /* ThirdViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
