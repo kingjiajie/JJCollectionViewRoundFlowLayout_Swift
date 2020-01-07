@@ -15,6 +15,19 @@
    5、支持shadow投影。
    6、支持collectionView，Vertical，Horizontal。
    7、支持根据不同section分别设置不同底色显示。
+   
+   ## 更新日志
+   ---
+   * `1.1.0`：增加支持根据section单独判断是否计算对应headerview和footerview
+   - `1.0.0`：初始项目  
+      1、collectionView section底色。  
+      2、是否包含headerview。  
+      3、是否包含footerview。  
+      4、支持borderWidth、borderColor。  
+      5、支持shadow投影。  
+      6、支持collectionView，Vertical，Horizontal。  
+      7、支持根据不同section分别设置不同底色显示。  
+      8、优化代码逻辑，增加根据支持根据不同section分别设置不同底色逻辑和demo
 
 ## Example
 
@@ -193,6 +206,41 @@ func collectionView(_ collectionView: UICollectionView, layout collectionViewLay
 
 
 ```  
+
+#### 支持根据不同section分别单独设置是否计算对应Headerview和footerview
+
+![](https://github.com/kingjiajie/JJCollectionViewRoundFlowLayout_Swift/blob/master/6.png)
+
+``` swift
+
+/// 根据section设置是否包含headerview（实现该方法后，isCalculateHeader将不会生效）
+/// - Parameters:
+///   - collectionView: collectionView description
+///   - layout: layout description
+///   - section: section description
+func collectionView(collectionView: UICollectionView,layout: UICollectionViewLayout, isCalculateHeaderViewIndex section: NSInteger) -> Bool {
+    //这里简单设置了默认间隔一个就计算footerview，后续根据实际业务进行设置
+    if (section % 2 == 0) {
+        return true;
+    }
+    return false;
+}
+
+/// 根据section设置是否包含footerview（实现该方法后，isCalculateFooter将不会生效）
+/// - Parameters:
+///   - collectionView: collectionView description
+///   - layout: layout description
+///   - section: section description
+func collectionView(collectionView: UICollectionView,layout: UICollectionViewLayout, isCalculateFooterViewIndex section: NSInteger) -> Bool {
+    //这里简单设置了默认间隔一个就计算footerview，后续根据实际业务进行设置
+    if (section % 2 == 0) {
+        return true;
+    }
+    return false;
+}
+
+```
+
 
 ## Author
 
