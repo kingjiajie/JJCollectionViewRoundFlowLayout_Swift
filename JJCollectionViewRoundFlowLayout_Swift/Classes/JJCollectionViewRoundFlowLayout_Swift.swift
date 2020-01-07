@@ -39,17 +39,36 @@ extension JJCollectionViewRoundFlowLayout_Swift{
 
 @objc public protocol JJCollectionViewDelegateRoundFlowLayout_Swift : UICollectionViewDelegateFlowLayout{
     
-    /// 设置底色偏移量(该设置只设置底色，与collectionview原sectioninsets区分）
-    /// - Parameter collectionView: collectionView description
-    /// - Parameter collectionViewLayout: collectionViewLayout description
-    /// - Parameter section: section description
-    func collectionView(_ collectionView : UICollectionView , layout collectionViewLayout:UICollectionViewLayout,borderEdgeInsertsForSectionAtIndex section : Int) -> UIEdgeInsets;
     
     /// 设置底色相关
     /// - Parameter collectionView: collectionView description
     /// - Parameter collectionViewLayout: collectionViewLayout description
     /// - Parameter section: section description
     func collectionView(_ collectionView : UICollectionView, layout collectionViewLayout : UICollectionViewLayout , configModelForSectionAtIndex section : Int ) -> JJCollectionViewRoundConfigModel_Swift;
+    
+    
+    
+    /// 设置底色偏移量(该设置只设置底色，与collectionview原sectioninsets区分）
+    /// - Parameter collectionView: collectionView description
+    /// - Parameter collectionViewLayout: collectionViewLayout description
+    /// - Parameter section: section description
+    @objc optional func collectionView(_ collectionView : UICollectionView , layout collectionViewLayout:UICollectionViewLayout,borderEdgeInsertsForSectionAtIndex section : Int) -> UIEdgeInsets;
+    
+    
+    /// 设置是否计算headerview（根据section判断是否单独计算）
+    /// - Parameters:
+    ///   - collectionView: collectionView description
+    ///   - layout: layout description
+    ///   - section: section description
+    @objc optional func collectionView(collectionView:UICollectionView ,layout:UICollectionViewLayout , isCalculateHeaderViewIndex section : NSInteger) -> Bool;
+    
+    
+    /// 设置是否计算footerview（根据section判断是否单独计算）
+    /// - Parameters:
+    ///   - collectionView: collectionView description
+    ///   - layout: layout description
+    ///   - section: section description
+    @objc optional func collectionView(collectionView:UICollectionView , layout:UICollectionViewLayout , isCalculateFooterViewIndex section : NSInteger) -> Bool;
 }
 
 open class JJCollectionViewRoundFlowLayout_Swift: UICollectionViewFlowLayout {
@@ -70,26 +89,34 @@ extension JJCollectionViewRoundFlowLayout_Swift{
         guard let sections = collectionView?.numberOfSections else { return };
         let delegate = collectionView?.delegate as! JJCollectionViewDelegateRoundFlowLayout_Swift
         
-        if (delegate.responds(to: #selector(delegate.collectionView(_:layout:borderEdgeInsertsForSectionAtIndex:))) ||
-            delegate.responds(to: #selector(delegate.collectionView(_:layout:configModelForSectionAtIndex:)))){
-        }
-        else {
-            return
+        //检测是否实现了背景样式模块代理
+        if delegate.responds(to: #selector(delegate.collectionView(_:layout:configModelForSectionAtIndex:))) {
+            
+        }else{
+            return;
         }
         
         //init
         self.register(JJCollectionReusableView_Swift.self, forDecorationViewOfKind: JJCollectionViewRoundFlowLayout_Swift.JJCollectionViewRoundSectionSwift)
-        
         decorationViewAttrs.removeAll()
         
         for section in 0..<sections {
             let numberOfItems = collectionView?.numberOfItems(inSection: section);
             if numberOfItems != nil && numberOfItems! > 0 {
                 var firstAttr = layoutAttributesForItem(at: IndexPath.init(row: 0, section: section))
-                if isCalculateHeader {
+                
+                var isCalculateHeaderView = false;
+                if delegate.responds(to: #selector(delegate.collectionView(collectionView:layout:isCalculateHeaderViewIndex:))) {
+                    isCalculateHeaderView = delegate.collectionView!(collectionView: self.collectionView!, layout: self, isCalculateHeaderViewIndex: section);
+                }else{
+                    isCalculateHeaderView = self.isCalculateHeader;
+                }
+                
+                if isCalculateHeaderView {
+                    //headerView
                     let headerAttr = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath.init(row: 0, section: section))
                     if headerAttr != nil &&
-                        (headerAttr?.frame.size.width != 0 || 
+                        (headerAttr?.frame.size.width != 0 ||
                             headerAttr?.frame.size.height != 0){
                         firstAttr = headerAttr!;
                     }else{
@@ -102,7 +129,17 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                 }
                 
                 var lastAttr = layoutAttributesForItem(at: IndexPath.init(row:(numberOfItems! - 1), section: section))
-                if isCalculateFooter {
+                
+                //判断是否计算headerview
+                var isCalculateFooterView = false;
+                if delegate.responds(to: #selector(delegate.collectionView(collectionView:layout:isCalculateFooterViewIndex:))) {
+                    isCalculateFooterView = delegate.collectionView!(collectionView: self.collectionView!, layout: self, isCalculateFooterViewIndex: section);
+                }else{
+                    isCalculateFooterView = self.isCalculateFooter;
+                }
+                
+                if isCalculateFooterView {
+                    //footerView
                     let footerAttr = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: IndexPath.init(row: 0, section: section))
                     if footerAttr != nil ||
                         (footerAttr?.frame.size.width != 0 ||
@@ -121,7 +158,6 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                 var sectionInset = self.sectionInset
                 if (delegate.responds(to: #selector(delegate.collectionView(_:layout:insetForSectionAt:)))) {
                     let inset = delegate.collectionView!(self.collectionView!, layout: self, insetForSectionAt: section)
-                    
                     if inset != sectionInset {
                         sectionInset = inset
                     }
@@ -130,15 +166,15 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                 var userCustomSectionInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
                 if delegate.responds(to: #selector(delegate.collectionView(_:layout:borderEdgeInsertsForSectionAtIndex:))) {
                     //检测是否实现了该方法，进行赋值
-                    userCustomSectionInset = delegate.collectionView(self.collectionView!, layout: self, borderEdgeInsertsForSectionAtIndex: section)
+                    userCustomSectionInset = delegate.collectionView!(self.collectionView!, layout: self, borderEdgeInsertsForSectionAtIndex: section)
                 }
                 
                 var sectionFrame = firstAttr!.frame.union(lastAttr!.frame)
-                if !self.isCalculateHeader && !self.isCalculateFooter{
+                if !isCalculateHeaderView && !isCalculateFooterView{
                     //都没有headerView&footerView
                     sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset)
                 }else{
-                    if (self.isCalculateHeader && !self.isCalculateFooter) {
+                    if (isCalculateHeaderView && !isCalculateFooterView) {
                         //headerView
                         let headerAttr = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath.init(row: 0, section: section))
                         //判断是否有headerview
@@ -161,7 +197,7 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                         }else{
                             sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset)
                         }
-                    }else if(!self.isCalculateHeader && self.isCalculateFooter){
+                    }else if(!isCalculateHeaderView && isCalculateFooterView){
                         //footerView
                         let footerAttr = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: IndexPath.init(row: 0, section: section))
                         if footerAttr != nil &&
