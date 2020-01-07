@@ -165,10 +165,14 @@ extension ViewController : UITableViewDelegate   {
             VC.isShowDifferentColor = true;
         case 10:
             let thirdVC = ThirdViewController.init();
+            thirdVC.isHaveHeaderFooterView = true;
+            thirdVC.isRoundWithHeaerView = true;
             self.navigationController?.pushViewController(thirdVC, animated: true);
             return
         case 11:
             let thirdVC = ThirdViewController.init();
+            thirdVC.isHaveHeaderFooterView = true;
+            thirdVC.isRoundWithFooterView = true;
             self.navigationController?.pushViewController(thirdVC, animated: true);
             return
         default:

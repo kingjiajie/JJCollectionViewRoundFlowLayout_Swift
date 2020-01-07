@@ -35,6 +35,11 @@ class ThirdViewController: UIViewController {
         
         return collectionView;
     }()
+    
+    var isHaveHeaderFooterView:Bool = false;
+    var isRoundWithHeaerView:Bool = false;
+    var isRoundWithFooterView:Bool = false;
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,7 +103,7 @@ class ThirdViewController: UIViewController {
 extension ThirdViewController :UICollectionViewDataSource{
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -111,6 +116,21 @@ extension ThirdViewController :UICollectionViewDataSource{
         return cell
     }
     
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        if self.isHaveHeaderFooterView{
+            return CGSize.init(width: 100, height: 60);
+        }
+        return CGSize.init(width: 0, height: 0);
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if self.isHaveHeaderFooterView{
+            return CGSize.init(width: 100, height: 60);
+        }
+        return CGSize.init(width: 0, height: 0);
+    }
+
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MyCollectionReusableView", for: indexPath) as! MyCollectionReusableView
         if kind == UICollectionElementKindSectionHeader {
@@ -123,7 +143,6 @@ extension ThirdViewController :UICollectionViewDataSource{
     }
 }
 
-
 extension ThirdViewController :UICollectionViewDelegate {
     
 }
@@ -135,25 +154,45 @@ extension ThirdViewController : JJCollectionViewDelegateRoundFlowLayout_Swift{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, configModelForSectionAtIndex section: Int) -> JJCollectionViewRoundConfigModel_Swift {
         let model = JJCollectionViewRoundConfigModel_Swift.init();
-//        model.cornerRadius = 4;
-//
-//        if (self.isHaveShadow) {
-//            if (self.isHaveBGColor) {
-//                model.backgroundColor = UIColor.init(red: 236/255.0, green:236/255.0 ,blue:236/255.0,alpha:1.0)
-//                model.shadowColor = UIColor.black.withAlphaComponent(0.6)
-//            }else{
-//                model.backgroundColor = UIColor.init(red: 255/255.0, green:255/255.0 ,blue:255/255.0,alpha:1.0)
-//                model.shadowColor = UIColor.init(red: 204/255.0, green:204/255.0 ,blue:204/255.0,alpha:0.6)
-//            }
-//            model.shadowOffset = CGSize.init(width: 0, height: 0)
-//            model.shadowOpacity = 1;
-//            model.shadowRadius = 4;
-//        }else{
-//            model.borderColor = UIColor.init(red: 204/255.0, green:204/255.0 ,blue:204/255.0,alpha:1.0);
-//            model.borderWidth = 1.0;
-//        }
-
+        model.backgroundColor = UIColor.init(red: 233/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+        model.cornerRadius = 10;
         return model;
+    }
+    
+    /// 根据section设置是否包含headerview（实现该方法后，isCalculateHeader将不会生效）
+    /// - Parameters:
+    ///   - collectionView: collectionView description
+    ///   - layout: layout description
+    ///   - section: section description
+    func collectionView(collectionView: UICollectionView,layout: UICollectionViewLayout, isCalculateHeaderViewIndex section: NSInteger) -> Bool {
         
+        if (self.isRoundWithHeaerView) {
+            if (section % 2 == 0) {
+                return true;
+            }
+        }else{
+            if (section == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /// 根据section设置是否包含footerview（实现该方法后，isCalculateFooter将不会生效）
+    /// - Parameters:
+    ///   - collectionView: collectionView description
+    ///   - layout: layout description
+    ///   - section: section description
+    func collectionView(collectionView: UICollectionView,layout: UICollectionViewLayout, isCalculateFooterViewIndex section: NSInteger) -> Bool {
+        if (self.isRoundWithFooterView) {
+            if (section % 2 == 0) {
+                return true;
+            }
+        }else{
+            if (section == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }
