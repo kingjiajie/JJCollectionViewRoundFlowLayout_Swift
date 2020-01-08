@@ -6,6 +6,6 @@ target 'JJCollectionViewRoundFlowLayout_Swift_Example' do
   target 'JJCollectionViewRoundFlowLayout_Swift_Tests' do
     inherit! :search_paths
 
-    pod 'FBSnapshotTestCase' , '~> 2.1.4'
+    #pod 'FBSnapshotTestCase' , '~> 2.1.4'
   end
 end
