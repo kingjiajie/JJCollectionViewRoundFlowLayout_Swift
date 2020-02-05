@@ -13,6 +13,8 @@
 		042FEAAC238204E5000F73ED /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042FEAA7238204E5000F73ED /* NextViewController.swift */; };
 		042FEAAD238204E5000F73ED /* MyCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042FEAA8238204E5000F73ED /* MyCollectionReusableView.swift */; };
 		0434FE1D23BD98EE0094B247 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0434FE1C23BD98EE0094B247 /* ThirdViewController.swift */; };
+		043B0A6523E80C9900C2C6B4 /* FourViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043B0A6423E80C9900C2C6B4 /* FourViewController.swift */; };
+		04DC685423E95CC100488DFA /* MyLabelCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DC685323E95CC100488DFA /* MyLabelCollectionViewCell.swift */; };
 		37F3E3CC11D28F983A3FEE06 /* Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11512C0B1DF9F20F73A3765F /* Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -40,6 +42,8 @@
 		042FEAA7238204E5000F73ED /* NextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 		042FEAA8238204E5000F73ED /* MyCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCollectionReusableView.swift; sourceTree = "<group>"; };
 		0434FE1C23BD98EE0094B247 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
+		043B0A6423E80C9900C2C6B4 /* FourViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourViewController.swift; sourceTree = "<group>"; };
+		04DC685323E95CC100488DFA /* MyLabelCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLabelCollectionViewCell.swift; sourceTree = "<group>"; };
 		11512C0B1DF9F20F73A3765F /* Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CDE4D46CCB2623C8E330E6C /* Pods-JJCollectionViewRoundFlowLayout_Swift_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JJCollectionViewRoundFlowLayout_Swift_Example.debug.xcconfig"; path = "Target Support Files/Pods-JJCollectionViewRoundFlowLayout_Swift_Example/Pods-JJCollectionViewRoundFlowLayout_Swift_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* JJCollectionViewRoundFlowLayout_Swift_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JJCollectionViewRoundFlowLayout_Swift_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,10 +134,12 @@
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				042FEAA8238204E5000F73ED /* MyCollectionReusableView.swift */,
 				042FEAA5238204E4000F73ED /* MyCollectionViewCell.swift */,
+				04DC685323E95CC100488DFA /* MyLabelCollectionViewCell.swift */,
 				042FEAA4238204E4000F73ED /* MyCollectionViewFlowLayout.swift */,
 				042FEAA7238204E5000F73ED /* NextViewController.swift */,
 				042FEAA6238204E5000F73ED /* SecondViewController.swift */,
 				0434FE1C23BD98EE0094B247 /* ThirdViewController.swift */,
+				043B0A6423E80C9900C2C6B4 /* FourViewController.swift */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -207,7 +213,6 @@
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
-				E1C47011B5C1E9DABD3612F2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -342,24 +347,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E1C47011B5C1E9DABD3612F2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JJCollectionViewRoundFlowLayout_Swift_Tests/Pods-JJCollectionViewRoundFlowLayout_Swift_Tests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/FBSnapshotTestCase/FBSnapshotTestCase.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSnapshotTestCase.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JJCollectionViewRoundFlowLayout_Swift_Tests/Pods-JJCollectionViewRoundFlowLayout_Swift_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -374,7 +361,9 @@
 				042FEAAA238204E5000F73ED /* MyCollectionViewCell.swift in Sources */,
 				042FEAAB238204E5000F73ED /* SecondViewController.swift in Sources */,
 				0434FE1D23BD98EE0094B247 /* ThirdViewController.swift in Sources */,
+				04DC685423E95CC100488DFA /* MyLabelCollectionViewCell.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				043B0A6523E80C9900C2C6B4 /* FourViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

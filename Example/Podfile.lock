@@ -1,27 +1,16 @@
 PODS:
-  - FBSnapshotTestCase (2.1.4):
-    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
-  - FBSnapshotTestCase/Core (2.1.4)
-  - FBSnapshotTestCase/SwiftSupport (2.1.4):
-    - FBSnapshotTestCase/Core
-  - JJCollectionViewRoundFlowLayout_Swift (0.1.1)
+  - JJCollectionViewRoundFlowLayout_Swift (2.0.0)
 
 DEPENDENCIES:
-  - FBSnapshotTestCase (~> 2.1.4)
   - JJCollectionViewRoundFlowLayout_Swift (from `../`)
-
-SPEC REPOS:
-  trunk:
-    - FBSnapshotTestCase
 
 EXTERNAL SOURCES:
   JJCollectionViewRoundFlowLayout_Swift:
     :path: "../"
 
 SPEC CHECKSUMS:
-  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  JJCollectionViewRoundFlowLayout_Swift: 8058e2045d1326cbea9ca9ec02a691929b4742cd
+  JJCollectionViewRoundFlowLayout_Swift: 5efccbeee578d82b0bfe2b2aded9a7d52b447b8b
 
-PODFILE CHECKSUM: 803bda93d620d91af685d8f1aada7fb43dd2ec37
+PODFILE CHECKSUM: 0a7860dab9968464ba91cdd55552f510076bc2d6
 
 COCOAPODS: 1.8.4
