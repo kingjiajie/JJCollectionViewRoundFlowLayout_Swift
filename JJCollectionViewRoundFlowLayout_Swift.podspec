@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JJCollectionViewRoundFlowLayout_Swift'
-  s.version          = '1.1.0'
-  s.summary          = 'JJCollectionViewRoundFlowLayout_Swift可设置CollectionView的BackgroundColor，设置简单，可自定义背景颜色偏移等功能.'
+  s.version          = '2.0.0'
+  s.summary          = 'JJCollectionViewRoundFlowLayout_Swift可设置CollectionView的BackgroundColor，设置简单，可自定义背景颜色偏移、设置cell对齐方式等功能，.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: JJCollectionViewRoundFlowLayout_Swift是JJCollectionViewRoundFlowLayout（OC：https://github.com/kingjiajie/JJCollectionViewRoundFlowLayout）的Swift版本，JJCollectionViewRoundFlowLayout可设置CollectionView的BackgroundColor，可根据用户Cell个数计算背景图尺寸，可自定义是否包括计算CollectionViewHeaderView、CollectionViewFootererView或只计算Cells。设置简单，可自定义背景颜色偏移，设置显示方向（竖向、横向）显示,不同Section设置不同的背景颜色。.
+TODO: JJCollectionViewRoundFlowLayout_Swift是JJCollectionViewRoundFlowLayout（OC：https://github.com/kingjiajie/JJCollectionViewRoundFlowLayout）的Swift版本，JJCollectionViewRoundFlowLayout可设置CollectionView的BackgroundColor，可根据用户Cell个数计算背景图尺寸，可自定义是否包括计算CollectionViewHeaderView、CollectionViewFootererView或只计算Cells。设置简单，可自定义背景颜色偏移，设置显示方向（竖向、横向）显示,不同Section设置不同的背景颜色，可设置cell对齐方式。.
                        DESC
 
   s.homepage         = 'https://github.com/kingjiajie/JJCollectionViewRoundFlowLayout_Swift'
