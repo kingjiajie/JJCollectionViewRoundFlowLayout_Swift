@@ -6,7 +6,7 @@
 [![Platform](https://img.shields.io/cocoapods/p/JJCollectionViewRoundFlowLayout_Swift.svg?style=flat)](https://cocoapods.org/pods/JJCollectionViewRoundFlowLayout_Swift)
 
 
- JJCollectionViewRoundFlowLayout_Swift是JJCollectionViewRoundFlowLayout（OC：https://github.com/kingjiajie/JJCollectionViewRoundFlowLayout ） 的Swift版本，JJCollectionViewRoundFlowLayout可设置CollectionView的BackgroundColor，可根据用户Cell个数计算背景图尺寸，可自定义是否包括计算CollectionViewHeaderView、CollectionViewFootererView或只计算Cells。设置简单，可自定义背景颜色偏移，设置显示方向（竖向、横向）显示,不同Section设置不同的背景颜色。
+ JJCollectionViewRoundFlowLayout_Swift是JJCollectionViewRoundFlowLayout（OC：https://github.com/kingjiajie/JJCollectionViewRoundFlowLayout ） 的Swift版本，JJCollectionViewRoundFlowLayout可设置CollectionView的BackgroundColor，可根据用户Cell个数计算背景图尺寸，可自定义是否包括计算CollectionViewHeaderView、CollectionViewFootererView或只计算Cells。设置简单，可自定义背景颜色偏移，设置显示方向（竖向、横向）显示,不同Section设置不同的背景颜色，可设置cell对齐方式。
 
    可设置内容：
    1、collectionView section底色。  
@@ -16,7 +16,8 @@
    5、支持shadow投影。  
    6、支持collectionView，Vertical，Horizontal。  
    7、支持根据不同section分别设置不同底色显示。  
-   8、支持根据section单独判断是否计算对应headerview和footerview    
+   8、支持根据section单独判断是否计算对应headerview和footerview  
+   9、新增对Cell的对齐模式进行设置，支持（左对齐）--- V2.0.0
    
    Swift版本地址：[GitHub地址](https://github.com/kingjiajie/JJCollectionViewRoundFlowLayout_Swift)
    
@@ -25,7 +26,10 @@
    
    ## 更新日志
    ---
-   * `1.1.0`：增加支持根据section单独判断是否计算对应headerview和footerview
+   * `2.0.0`：  
+   1、优化代码，对代码逻辑进行抽离，增加工具类等。  
+   2、新增支持设置Cell对齐模式（左对齐）。
+   - `1.1.0`：增加支持根据section单独判断是否计算对应headerview和footerview
    - `1.0.0`：初始项目  
       1、collectionView section底色。  
       2、是否包含headerview。  
