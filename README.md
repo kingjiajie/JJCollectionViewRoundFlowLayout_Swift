@@ -252,6 +252,17 @@ func collectionView(collectionView: UICollectionView,layout: UICollectionViewLay
 
 ```
 
+#### 支持对Cell的对齐模式进行设置、可选是否填充底色(左对齐)
+  
+  ![](https://github.com/kingjiajie/JJCollectionViewRoundFlowLayout_Swift/blob/master/7.png)
+
+``` swift
+
+    let layout = JJCollectionViewRoundFlowLayout_Swift.init();
+    layout.collectionCellAlignmentType = .Lelt; //设置对齐方式
+    layout.isRoundEnabled = false; //设置是否填充底色
+
+```
 
 ## Author
 
