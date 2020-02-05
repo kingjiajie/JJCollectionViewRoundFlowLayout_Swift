@@ -39,14 +39,11 @@ extension JJCollectionViewRoundFlowLayout_Swift{
 
 @objc public protocol JJCollectionViewDelegateRoundFlowLayout_Swift : UICollectionViewDelegateFlowLayout{
     
-    
     /// 设置底色相关
     /// - Parameter collectionView: collectionView description
     /// - Parameter collectionViewLayout: collectionViewLayout description
     /// - Parameter section: section description
     func collectionView(_ collectionView : UICollectionView, layout collectionViewLayout : UICollectionViewLayout , configModelForSectionAtIndex section : Int ) -> JJCollectionViewRoundConfigModel_Swift;
-    
-    
     
     /// 设置底色偏移量(该设置只设置底色，与collectionview原sectioninsets区分）
     /// - Parameter collectionView: collectionView description
@@ -54,14 +51,12 @@ extension JJCollectionViewRoundFlowLayout_Swift{
     /// - Parameter section: section description
     @objc optional func collectionView(_ collectionView : UICollectionView , layout collectionViewLayout:UICollectionViewLayout,borderEdgeInsertsForSectionAtIndex section : Int) -> UIEdgeInsets;
     
-    
     /// 设置是否计算headerview（根据section判断是否单独计算）
     /// - Parameters:
     ///   - collectionView: collectionView description
     ///   - layout: layout description
     ///   - section: section description
     @objc optional func collectionView(collectionView:UICollectionView ,layout:UICollectionViewLayout , isCalculateHeaderViewIndex section : NSInteger) -> Bool;
-    
     
     /// 设置是否计算footerview（根据section判断是否单独计算）
     /// - Parameters:
@@ -72,6 +67,13 @@ extension JJCollectionViewRoundFlowLayout_Swift{
 }
 
 open class JJCollectionViewRoundFlowLayout_Swift: UICollectionViewFlowLayout {
+    
+    /// 设置cell对齐方式，不设置为使用系统默认，支持Left
+    open var collectionCellAlignmentType : JJCollectionViewRoundFlowLayoutSwiftAlignmentType = .System;
+
+    /// 是否开始Round计算，（默认YES），当该位置为NO时，计算模块都不开启，包括设置的代理
+    open var isRoundEnabled : Bool = true;
+    
     open var isCalculateHeader : Bool = false    // 是否计算header
     open var isCalculateFooter : Bool = false    // 是否计算footer
     
@@ -85,6 +87,11 @@ extension JJCollectionViewRoundFlowLayout_Swift{
     
     override public func prepare() {
         super.prepare()
+        
+        if !self.isRoundEnabled {
+            //为NO，不需要开启时直接return
+            return;
+        }
         
         guard let sections = collectionView?.numberOfSections else { return };
         let delegate = collectionView?.delegate as! JJCollectionViewDelegateRoundFlowLayout_Swift
@@ -105,6 +112,7 @@ extension JJCollectionViewRoundFlowLayout_Swift{
             if numberOfItems != nil && numberOfItems! > 0 {
                 var firstAttr = layoutAttributesForItem(at: IndexPath.init(row: 0, section: section))
                 
+                //判断是否计算headerview
                 var isCalculateHeaderView = false;
                 if delegate.responds(to: #selector(delegate.collectionView(collectionView:layout:isCalculateHeaderViewIndex:))) {
                     isCalculateHeaderView = delegate.collectionView!(collectionView: self.collectionView!, layout: self, isCalculateHeaderViewIndex: section);
@@ -267,7 +275,6 @@ extension JJCollectionViewRoundFlowLayout_Swift{
             }
         }
     }
-    
 }
 
 //MARK: 默认section无偏移大小
@@ -293,11 +300,51 @@ extension JJCollectionViewRoundFlowLayout_Swift{
 }
 
 //MARK: --
+//public extension JJCollectionViewRoundFlowLayout_Swift{
+//    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+//        let attrs = super.layoutAttributesForElements(in: rect) ?? []
+//        var useAttrs = NSMutableArray.init(array: attrs)
+//
+//        //用户设置了对称方式，进行对称设置 (若没设置，不执行，继续其他计算)
+//        switch self.collectionCellAlignmentType {
+//        case .Lelt:
+//            let formatGroudAttr = self.scrollDirection == .vertical ?
+//                self.groupLayoutAttributesForElementsByYLineWithLayoutAttributesAttrs(attrs): //竖向
+//                self.groupLayoutAttributesForElementsByXLineWithLayoutAttributesAttrs(attrs); //横向
+//
+//            _ = self.evaluatedAllCellSettingFrameWithLayoutAttributesAttrs(formatGroudAttr, toChangeAttributesAttrsList: &useAttrs, cellAlignmentType: self.collectionCellAlignmentType)
+//            break;
+//        default:
+//            break;
+//        }
+//
+//        for attr in self.decorationViewAttrs {
+//            useAttrs.add(attr)
+//        }
+//        return useAttrs as? [UICollectionViewLayoutAttributes]
+//    }
+//}
+
 public extension JJCollectionViewRoundFlowLayout_Swift{
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         var attrs = super.layoutAttributesForElements(in: rect) ?? []
+//        var useAttrs = NSMutableArray.init(array: attrs)
+        
+        //用户设置了对称方式，进行对称设置 (若没设置，不执行，继续其他计算)
+        switch self.collectionCellAlignmentType {
+        case .Lelt:
+            let formatGroudAttr = self.scrollDirection == .vertical ?
+                self.groupLayoutAttributesForElementsByYLineWithLayoutAttributesAttrs(attrs): //竖向
+                self.groupLayoutAttributesForElementsByXLineWithLayoutAttributesAttrs(attrs); //横向
+            
+            _ = self.evaluatedAllCellSettingFrameWithLayoutAttributesAttrs(formatGroudAttr, toChangeAttributesAttrsList: &attrs, cellAlignmentType: self.collectionCellAlignmentType)
+            break;
+        default:
+            break;
+        }
+        
         for attr in self.decorationViewAttrs {
-            attrs.append(attr)
+            attrs.append(attr);
         }
         return attrs
     }
