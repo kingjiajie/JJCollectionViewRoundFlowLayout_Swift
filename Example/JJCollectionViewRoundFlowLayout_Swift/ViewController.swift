@@ -18,6 +18,21 @@ class ViewController: UIViewController {
         tableview.tableFooterView = UIView();
         return tableview
     }()
+    let myTitleArr : Array = ["CollectionView（包住section圆角）",//1
+                              "有Header&Footer，包Header,不包Footer",//2
+                              "有Header&Footer，包Header,包Footer",//3
+                              "有Header&Footer，不包Header,包Footer",//4
+                              "CollectionView（包住section圆角）(横向)",//5
+                              "CollectionView (横向 有H&F View)",//6
+                              "borderLine 包Section",//7
+                              "borderLine 包Section（带投影）",//8
+                              "BackgroundColor 底色（带投影）",//9
+                              "CollectionView（底色 圆角 分别不同颜色）",//10
+                              "CollectionView（单独设置某个 header 底色）",
+                              "CollectionView（单独设置某个 footer 底色））",
+                              "CollectionView,无sections底色，cell左对齐",
+                              "CollectionView,有sections底色，cell左对齐"
+    ];
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +92,7 @@ class ViewController: UIViewController {
 
 extension ViewController : UITableViewDataSource   {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 12
+        return self.myTitleArr.count;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -86,36 +101,7 @@ extension ViewController : UITableViewDataSource   {
         if cell == nil {
             cell = UITableViewCell.init(style: .default, reuseIdentifier: cellIdentifier);
         }
-        switch (indexPath.row) {
-        case 0:
-            cell?.textLabel?.text = "CollectionView（包住section圆角）";
-        case 1:
-            cell?.textLabel?.text = "有Header&Footer，包Header,不包Footer";
-        case 2:
-            cell?.textLabel?.text = "有Header&Footer，包Header,包Footer";
-        case 3:
-            cell?.textLabel?.text = "有Header&Footer，不包Header,包Footer";
-        case 4:
-            cell?.textLabel?.text = "CollectionView（包住section圆角）(横向)";
-        case 5:
-            cell?.textLabel?.text = "CollectionView (横向 有H&F View)";
-        case 6:
-            cell?.textLabel?.text = "borderLine 包Section";
-        case 7:
-            cell?.textLabel?.text = "borderLine 包Section（带投影）";
-        case 8:
-            cell?.textLabel?.text = "BackgroundColor 底色（带投影）";
-        case 9:
-            cell?.textLabel?.text = "CollectionView（底色 圆角 分别不同颜色）";
-        case 10:
-            cell?.textLabel?.text = "CollectionView（单独设置某个 header 底色）";
-        case 11:
-            cell?.textLabel?.text = "CollectionView（单独设置某个 footer 底色））";
-            
-        default:
-            break;
-        }
-        
+        cell?.textLabel?.text = self.myTitleArr[indexPath.row];
         return cell!;
     }
 }
@@ -175,6 +161,17 @@ extension ViewController : UITableViewDelegate   {
             thirdVC.isRoundWithFooterView = true;
             self.navigationController?.pushViewController(thirdVC, animated: true);
             return
+        case 12:
+            let fourVC = FourViewController.init();
+            fourVC.isAlignmentLeft = true;
+            self.navigationController?.pushViewController(fourVC, animated: true);
+            return;
+        case 13:
+            let fourVC = FourViewController.init();
+            fourVC.isAlignmentLeft = true;
+            fourVC.isHaveRoundBGView = true;
+            self.navigationController?.pushViewController(fourVC, animated: true);
+            return;
         default:
             break;
         }
