@@ -8,6 +8,7 @@
 
 import UIKit
 
+@objcMembers
 open class JJCollectionViewRoundConfigModel_Swift: NSObject {
     open var borderWidth : CGFloat = 0;
     open var borderColor : UIColor?
