@@ -7,7 +7,7 @@
 
 import UIKit
 
-public enum JJCollectionViewRoundFlowLayoutSwiftAlignmentType {
+@objc public enum JJCollectionViewRoundFlowLayoutSwiftAlignmentType:Int {
     case System
-    case Lelt
+    case Left
 }
