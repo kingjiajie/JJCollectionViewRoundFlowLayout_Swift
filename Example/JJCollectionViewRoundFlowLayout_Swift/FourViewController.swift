@@ -10,13 +10,14 @@ import UIKit
 import JJCollectionViewRoundFlowLayout_Swift
 
 class FourViewController: UIViewController {
+    
+    var isHaveRoundBGView:Bool = false;
+    var isAlignmentLeft:JJCollectionViewRoundFlowLayoutSwiftAlignmentType = .System;
 
     lazy var myCollectionView : UICollectionView = {
         let layout = JJCollectionViewRoundFlowLayout_Swift.init();
         
-        if (self.isAlignmentLeft) {
-            layout.collectionCellAlignmentType = .Lelt;
-        }
+        layout.collectionCellAlignmentType = self.isAlignmentLeft;
         layout.isRoundEnabled = self.isHaveRoundBGView;
         
         
@@ -53,9 +54,6 @@ class FourViewController: UIViewController {
                              "想一下接下来做什么功能呢",
                              "嗯，知道了",
                              "优秀"];
-    
-    var isHaveRoundBGView:Bool = false;
-    var isAlignmentLeft:Bool = false;
     
     
     override func viewDidLoad() {

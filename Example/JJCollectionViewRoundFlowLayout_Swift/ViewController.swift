@@ -163,12 +163,12 @@ extension ViewController : UITableViewDelegate   {
             return
         case 12:
             let fourVC = FourViewController.init();
-            fourVC.isAlignmentLeft = true;
+            fourVC.isAlignmentLeft = .Left;
             self.navigationController?.pushViewController(fourVC, animated: true);
             return;
         case 13:
             let fourVC = FourViewController.init();
-            fourVC.isAlignmentLeft = true;
+            fourVC.isAlignmentLeft = .Left;
             fourVC.isHaveRoundBGView = true;
             self.navigationController?.pushViewController(fourVC, animated: true);
             return;
