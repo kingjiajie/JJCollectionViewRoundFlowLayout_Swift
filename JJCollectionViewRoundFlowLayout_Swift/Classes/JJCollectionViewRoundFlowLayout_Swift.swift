@@ -66,17 +66,23 @@ extension JJCollectionViewRoundFlowLayout_Swift{
     @objc optional func collectionView(collectionView:UICollectionView , layout:UICollectionViewLayout , isCalculateFooterViewIndex section : NSInteger) -> Bool;
 }
 
+@objcMembers
 open class JJCollectionViewRoundFlowLayout_Swift: UICollectionViewFlowLayout {
     
     /// 设置cell对齐方式，不设置为使用系统默认，支持Left
     open var collectionCellAlignmentType : JJCollectionViewRoundFlowLayoutSwiftAlignmentType = .System;
 
-    /// 是否开始Round计算，（默认YES），当该位置为NO时，计算模块都不开启，包括设置的代理
+    /// 是否开始Round计算，（默认YES），当该位置为false时，计算模块都不开启，包括设置的代理
     open var isRoundEnabled : Bool = true;
     
     open var isCalculateHeader : Bool = false    // 是否计算header
     open var isCalculateFooter : Bool = false    // 是否计算footer
     
+    //是否使用不规则Cell大小的计算方式(若Cell的大小是相同固定大小，则无需开启该方法)，默认false
+    open var isCalculateTypeOpenIrregularitiesCell : Bool = false
+    
+    
+    //自定义Attr数组
     var decorationViewAttrs : [UICollectionViewLayoutAttributes] = {
         let arr = NSMutableArray.init(capacity: 0)
         return arr as! [UICollectionViewLayoutAttributes]
@@ -110,7 +116,8 @@ extension JJCollectionViewRoundFlowLayout_Swift{
         for section in 0..<sections {
             let numberOfItems = collectionView?.numberOfItems(inSection: section);
             if numberOfItems != nil && numberOfItems! > 0 {
-                var firstAttr = layoutAttributesForItem(at: IndexPath.init(row: 0, section: section))
+                let firstAttr = layoutAttributesForItem(at: IndexPath.init(row: 0, section: section))
+                var firstFrame = firstAttr!.frame;
                 
                 //判断是否计算headerview
                 var isCalculateHeaderView = false;
@@ -126,17 +133,33 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                     if headerAttr != nil &&
                         (headerAttr?.frame.size.width != 0 ||
                             headerAttr?.frame.size.height != 0){
-                        firstAttr = headerAttr!;
+                        firstFrame = headerAttr!.frame;
                     }else{
-                        let rect = firstAttr!.frame;
-                        firstAttr?.frame = CGRect.init(x: rect.origin.x,
-                                                       y: rect.origin.y,
-                                                       width: collectionView!.bounds.size.width,
-                                                       height: collectionView!.bounds.size.height)
+                        var rect = firstFrame;
+                        if isCalculateTypeOpenIrregularitiesCell {
+                            rect = JJCollectionViewFlowLayoutUtils_Swift.calculateIrregularitiesCellByMinTopFrameWithLayout(self, section: section, numberOfItems: numberOfItems!, defaultFrame: firstFrame);
+                        }
+                        
+                        firstFrame = self.scrollDirection == .vertical ?
+                            CGRect.init(x: rect.origin.x,
+                                        y: rect.origin.y,
+                                        width: collectionView!.bounds.size.width,
+                                        height: rect.size.height):
+                            CGRect.init(x: rect.origin.x,
+                                        y: rect.origin.y,
+                                        width: rect.size.width,
+                                        height: collectionView!.bounds.size.height);
+                        
+                    }
+                }else{
+                    //不计算headerview的情况
+                    if isCalculateTypeOpenIrregularitiesCell {
+                        firstFrame = JJCollectionViewFlowLayoutUtils_Swift.calculateIrregularitiesCellByMinTopFrameWithLayout(self, section: section, numberOfItems: numberOfItems!, defaultFrame: firstFrame);
                     }
                 }
                 
-                var lastAttr = layoutAttributesForItem(at: IndexPath.init(row:(numberOfItems! - 1), section: section))
+                let lastAttr = layoutAttributesForItem(at: IndexPath.init(row:(numberOfItems! - 1), section: section))
+                var lastFrame = lastAttr!.frame;
                 
                 //判断是否计算headerview
                 var isCalculateFooterView = false;
@@ -152,13 +175,27 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                     if footerAttr != nil ||
                         (footerAttr?.frame.size.width != 0 ||
                             footerAttr?.frame.size.height != 0){
-                        lastAttr = footerAttr
+                        lastFrame = footerAttr!.frame;
                     }else{
-                        let rect = lastAttr!.frame
-                        lastAttr?.frame = CGRect.init(x: rect.origin.x,
-                                                      y: rect.origin.y,
-                                                      width: collectionView!.bounds.size.width,
-                                                      height: collectionView!.bounds.size.height)
+                        var rect = lastFrame;
+                        if self.isCalculateTypeOpenIrregularitiesCell {
+                            rect = JJCollectionViewFlowLayoutUtils_Swift.calculateIrregularitiesCellByMaxBottomFrameWithLayout(self, section: section, numberOfItems: numberOfItems!, defaultFrame: lastFrame);
+                        }
+                        lastFrame = self.scrollDirection == .vertical ?
+                            CGRect.init(x: rect.origin.x,
+                                        y: rect.origin.y,
+                                        width: collectionView!.bounds.size.width,
+                                        height: rect.size.height):
+                            CGRect.init(x: rect.origin.x,
+                                        y: rect.origin.y,
+                                        width: rect.size.width,
+                                        height: collectionView!.bounds.size.height)
+                        
+                    }
+                }else{
+                    //不计算footerView的情况
+                    if self.isCalculateTypeOpenIrregularitiesCell {
+                        lastFrame = JJCollectionViewFlowLayoutUtils_Swift.calculateIrregularitiesCellByMaxBottomFrameWithLayout(self, section: section, numberOfItems: numberOfItems!, defaultFrame: lastFrame);
                     }
                 }
                 
@@ -177,7 +214,7 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                     userCustomSectionInset = delegate.collectionView!(self.collectionView!, layout: self, borderEdgeInsertsForSectionAtIndex: section)
                 }
                 
-                var sectionFrame = firstAttr!.frame.union(lastAttr!.frame)
+                var sectionFrame = firstFrame.union(lastFrame)
                 if !isCalculateHeaderView && !isCalculateFooterView{
                     //都没有headerView&footerView
                     sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset)
@@ -300,47 +337,18 @@ extension JJCollectionViewRoundFlowLayout_Swift{
 }
 
 //MARK: --
-//public extension JJCollectionViewRoundFlowLayout_Swift{
-//    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-//        let attrs = super.layoutAttributesForElements(in: rect) ?? []
-//        var useAttrs = NSMutableArray.init(array: attrs)
-//
-//        //用户设置了对称方式，进行对称设置 (若没设置，不执行，继续其他计算)
-//        switch self.collectionCellAlignmentType {
-//        case .Lelt:
-//            let formatGroudAttr = self.scrollDirection == .vertical ?
-//                self.groupLayoutAttributesForElementsByYLineWithLayoutAttributesAttrs(attrs): //竖向
-//                self.groupLayoutAttributesForElementsByXLineWithLayoutAttributesAttrs(attrs); //横向
-//
-//            _ = self.evaluatedAllCellSettingFrameWithLayoutAttributesAttrs(formatGroudAttr, toChangeAttributesAttrsList: &useAttrs, cellAlignmentType: self.collectionCellAlignmentType)
-//            break;
-//        default:
-//            break;
-//        }
-//
-//        for attr in self.decorationViewAttrs {
-//            useAttrs.add(attr)
-//        }
-//        return useAttrs as? [UICollectionViewLayoutAttributes]
-//    }
-//}
 
 public extension JJCollectionViewRoundFlowLayout_Swift{
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         var attrs = super.layoutAttributesForElements(in: rect) ?? []
-//        var useAttrs = NSMutableArray.init(array: attrs)
         
         //用户设置了对称方式，进行对称设置 (若没设置，不执行，继续其他计算)
-        switch self.collectionCellAlignmentType {
-        case .Lelt:
-            let formatGroudAttr = self.scrollDirection == .vertical ?
-                self.groupLayoutAttributesForElementsByYLineWithLayoutAttributesAttrs(attrs): //竖向
-                self.groupLayoutAttributesForElementsByXLineWithLayoutAttributesAttrs(attrs); //横向
+        if self.collectionCellAlignmentType != .System
+        && self.scrollDirection == .vertical{
+            //竖向,Cell对齐方式暂不支持横向
+            let formatGroudAttr = self.groupLayoutAttributesForElementsByYLineWithLayoutAttributesAttrs(attrs); //竖向
             
             _ = self.evaluatedAllCellSettingFrameWithLayoutAttributesAttrs(formatGroudAttr, toChangeAttributesAttrsList: &attrs, cellAlignmentType: self.collectionCellAlignmentType)
-            break;
-        default:
-            break;
         }
         
         for attr in self.decorationViewAttrs {

@@ -49,7 +49,7 @@ extension JJCollectionViewRoundFlowLayout_Swift{
         toChangeAttributesAttrsList.removeAll()
         for calculateAttributesAttrsArr in layoutAttributesAttrs {
             switch alignmentType {
-            case .Lelt:
+            case .Left:
                 self.evaluatedCellSettingFrameByLeftWithWithJJCollectionLayout(self, layoutAttributesAttrs: calculateAttributesAttrsArr);
                 
                 break
