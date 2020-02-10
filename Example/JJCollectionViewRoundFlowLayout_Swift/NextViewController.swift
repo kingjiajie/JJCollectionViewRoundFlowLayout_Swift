@@ -153,18 +153,19 @@ extension NextViewController : UICollectionViewDelegateFlowLayout{
         return CGSize.init(width: 100, height: 60)
     }
     
-    func randomIntNumber(lower: Int = 0,upper: Int = Int(UInt32.max)) -> Int {
-        return lower + Int(arc4random_uniform(UInt32(upper - lower)))
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if indexPath.row == 0 {
-            return CGSize.init(width: self.randomIntNumber(lower: 40, upper: 50), height: self.randomIntNumber(lower: 30, upper: 50))
-        }else if indexPath.row == 11{
-            return CGSize.init(width: self.randomIntNumber(lower: 40, upper: 50), height: self.randomIntNumber(lower: 30, upper: 50))
-        }
-        return CGSize.init(width: self.randomIntNumber(lower: 50, upper: 100), height: self.randomIntNumber(lower: 50, upper: 100))
-    }
+    //测试不规则Cell
+//    func randomIntNumber(lower: Int = 0,upper: Int = Int(UInt32.max)) -> Int {
+//        return lower + Int(arc4random_uniform(UInt32(upper - lower)))
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        if indexPath.row == 0 {
+//            return CGSize.init(width: self.randomIntNumber(lower: 40, upper: 50), height: self.randomIntNumber(lower: 30, upper: 50))
+//        }else if indexPath.row == 11{
+//            return CGSize.init(width: self.randomIntNumber(lower: 40, upper: 50), height: self.randomIntNumber(lower: 30, upper: 50))
+//        }
+//        return CGSize.init(width: self.randomIntNumber(lower: 50, upper: 100), height: self.randomIntNumber(lower: 50, upper: 100))
+//    }
 }
 
 extension NextViewController : JJCollectionViewDelegateRoundFlowLayout_Swift{

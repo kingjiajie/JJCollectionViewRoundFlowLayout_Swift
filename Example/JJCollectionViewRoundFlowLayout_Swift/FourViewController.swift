@@ -12,12 +12,12 @@ import JJCollectionViewRoundFlowLayout_Swift
 class FourViewController: UIViewController {
     
     var isHaveRoundBGView:Bool = false;
-    var isAlignmentLeft:JJCollectionViewRoundFlowLayoutSwiftAlignmentType = .System;
-
+    var myAlignmentType:JJCollectionViewRoundFlowLayoutSwiftAlignmentType = .System;
+    
     lazy var myCollectionView : UICollectionView = {
         let layout = JJCollectionViewRoundFlowLayout_Swift.init();
         
-        layout.collectionCellAlignmentType = self.isAlignmentLeft;
+        layout.collectionCellAlignmentType = self.myAlignmentType;
         layout.isRoundEnabled = self.isHaveRoundBGView;
         
         
@@ -58,7 +58,7 @@ class FourViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
         self.initialization();
@@ -120,10 +120,10 @@ extension FourViewController{
     
     static func calculateStringViewSizeWithShowSize(_ showSize : CGSize , fontSize : UIFont , string : String) -> CGSize {
         let size = showSize;
-
+        
         let dic = [NSAttributedStringKey.font:fontSize];
         let stringDrawingOptions = NSStringDrawingOptions.init(rawValue: NSStringDrawingOptions.usesLineFragmentOrigin.rawValue
-        | NSStringDrawingOptions.usesFontLeading.rawValue);
+            | NSStringDrawingOptions.usesFontLeading.rawValue);
         let cur = ((string as NSString).boundingRect(with: size, options: stringDrawingOptions, attributes: dic, context: nil)).size;
         return cur;
     }
@@ -147,7 +147,6 @@ extension FourViewController :UICollectionViewDataSource{
 }
 
 extension FourViewController :UICollectionViewDelegate {
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let string = self.myDataArr[indexPath.row];
         
