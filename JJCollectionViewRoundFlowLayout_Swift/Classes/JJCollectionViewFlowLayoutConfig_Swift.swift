@@ -10,4 +10,5 @@ import UIKit
 @objc public enum JJCollectionViewRoundFlowLayoutSwiftAlignmentType:Int {
     case System
     case Left
+    case Center
 }

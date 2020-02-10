@@ -16,12 +16,13 @@ extension JJCollectionViewRoundFlowLayout_Swift{
         var allDict = Dictionary<CGFloat,NSMutableArray>();
         
         for (_,attr) in layoutAttributesAttrs.enumerated() {
-            let dictArr = allDict[attr.frame.origin.y]
+            
+            let dictArr = allDict[attr.frame.midY]
             if dictArr != nil {
                 dictArr?.add(attr.copy())
             }else{
                 let arr = NSMutableArray.init(object: attr.copy());
-                allDict[attr.frame.origin.y] = arr
+                allDict[attr.frame.midY] = arr
             }
         }
         return (allDict as NSDictionary).allValues as! Array<Array<UICollectionViewLayoutAttributes>>;
@@ -51,8 +52,10 @@ extension JJCollectionViewRoundFlowLayout_Swift{
             switch alignmentType {
             case .Left:
                 self.evaluatedCellSettingFrameByLeftWithWithJJCollectionLayout(self, layoutAttributesAttrs: calculateAttributesAttrsArr);
-                
                 break
+            case .Center:
+                self.evaluatedCellSettingFrameByCenterWithWithJJCollectionLayout(self,layoutAttributesAttrs:calculateAttributesAttrsArr);
+                break;
             default:
                 break;
             }
@@ -62,7 +65,7 @@ extension JJCollectionViewRoundFlowLayout_Swift{
     }
 }
 
-//MARK: - alignment
+//MARK: - alignmentLeft
 extension JJCollectionViewRoundFlowLayout_Swift{
     
     /// 计算AttributesAttrs左对齐
@@ -85,6 +88,48 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                     frame.origin.x = pAttr!.frame.origin.x + pAttr!.frame.size.width + JJCollectionViewFlowLayoutUtils_Swift.evaluatedMinimumInteritemSpacingForSectionWithCollectionLayout(layout, atIndex: attr.indexPath.section);
                 }else{
                     frame.origin.x = JJCollectionViewFlowLayoutUtils_Swift.evaluatedSectionInsetForItemWithCollectionLayout(layout, atIndex: attr.indexPath.section).left;
+                }
+            }else{
+                //横向
+                if pAttr != nil {
+                    frame.origin.y = pAttr!.frame.origin.y + pAttr!.frame.size.height + JJCollectionViewFlowLayoutUtils_Swift.evaluatedMinimumInteritemSpacingForSectionWithCollectionLayout(layout, atIndex: attr.indexPath.section);
+                }else{
+                    frame.origin.y = JJCollectionViewFlowLayoutUtils_Swift.evaluatedSectionInsetForItemWithCollectionLayout(layout, atIndex: attr.indexPath.section).top;
+                }
+            }
+            attr.frame = frame;
+            pAttr = attr;
+        }
+    }
+}
+
+//MARK: - alignmentCenter
+extension JJCollectionViewRoundFlowLayout_Swift{
+    func evaluatedCellSettingFrameByCenterWithWithJJCollectionLayout(_ layout:JJCollectionViewRoundFlowLayout_Swift, layoutAttributesAttrs : Array<UICollectionViewLayoutAttributes>){
+        //center
+        var pAttr : UICollectionViewLayoutAttributes? = nil;
+        
+        var useWidth : CGFloat = 0.0;
+        let theSection = layoutAttributesAttrs.first!.indexPath.section;
+        for attr in layoutAttributesAttrs{
+            useWidth += attr.bounds.size.width;
+        }
+        
+        let firstLeft = (layout.collectionView!.bounds.size.width - useWidth - (JJCollectionViewFlowLayoutUtils_Swift.evaluatedMinimumInteritemSpacingForSectionWithCollectionLayout(layout, atIndex: theSection) * CGFloat(layoutAttributesAttrs.count)))/2.0;
+        
+        for attr in layoutAttributesAttrs{
+            if attr.representedElementKind != nil {
+                //nil when representedElementCategory is UICollectionElementCategoryCell (空的时候为cell)
+                continue;
+            }
+            
+            var frame = attr.frame;
+            if layout.scrollDirection == .vertical {
+                //竖向
+                if pAttr != nil {
+                    frame.origin.x = pAttr!.frame.origin.x + pAttr!.frame.size.width + JJCollectionViewFlowLayoutUtils_Swift.evaluatedMinimumInteritemSpacingForSectionWithCollectionLayout(layout, atIndex: attr.indexPath.section);
+                }else{
+                    frame.origin.x = firstLeft;
                 }
             }else{
                 //横向
