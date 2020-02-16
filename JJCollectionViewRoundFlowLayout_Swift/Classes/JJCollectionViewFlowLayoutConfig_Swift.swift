@@ -11,4 +11,5 @@ import UIKit
     case System
     case Left
     case Center
+    case Right
 }

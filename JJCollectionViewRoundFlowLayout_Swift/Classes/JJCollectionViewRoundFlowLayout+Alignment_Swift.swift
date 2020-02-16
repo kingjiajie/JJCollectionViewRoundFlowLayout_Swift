@@ -56,6 +56,11 @@ extension JJCollectionViewRoundFlowLayout_Swift{
             case .Center:
                 self.evaluatedCellSettingFrameByCenterWithWithJJCollectionLayout(self,layoutAttributesAttrs:calculateAttributesAttrsArr);
                 break;
+            case .Right:
+                var reversedArray = Array.init(calculateAttributesAttrsArr);
+                reversedArray.reverse();
+                self.evaluatedCellSettingFrameByRightWithWithJJCollectionLayout(self, layoutAttributesAttrs: reversedArray);
+                break;
             default:
                 break;
             }
@@ -138,6 +143,40 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                 }else{
                     frame.origin.y = JJCollectionViewFlowLayoutUtils_Swift.evaluatedSectionInsetForItemWithCollectionLayout(layout, atIndex: attr.indexPath.section).top;
                 }
+            }
+            attr.frame = frame;
+            pAttr = attr;
+        }
+    }
+}
+
+
+//MARK: - alignmentRight
+extension JJCollectionViewRoundFlowLayout_Swift{
+    
+    /// 计算AttributesAttrs左对齐
+    /// - Parameters:
+    ///   - layout: layout description
+    ///   - layoutAttributesAttrs: 需计算的AttributesAttrs列表
+    func evaluatedCellSettingFrameByRightWithWithJJCollectionLayout(_ layout:JJCollectionViewRoundFlowLayout_Swift, layoutAttributesAttrs : Array<UICollectionViewLayoutAttributes>){
+        //left
+        var pAttr:UICollectionViewLayoutAttributes? = nil;
+        for attr in layoutAttributesAttrs {
+            if attr.representedElementKind != nil {
+                //nil when representedElementCategory is UICollectionElementCategoryCell (空的时候为cell)
+                continue;
+            }
+            
+            var frame = attr.frame;
+            if layout.scrollDirection == .vertical {
+                //竖向
+                if pAttr != nil {
+                    frame.origin.x = pAttr!.frame.origin.x - JJCollectionViewFlowLayoutUtils_Swift.evaluatedMinimumInteritemSpacingForSectionWithCollectionLayout(layout, atIndex: attr.indexPath.section) - frame.size.width;
+                }else{
+                    frame.origin.x = layout.collectionView!.bounds.size.width -  JJCollectionViewFlowLayoutUtils_Swift.evaluatedSectionInsetForItemWithCollectionLayout(layout, atIndex: attr.indexPath.section).right - frame.size.width;
+                }
+            }else{
+                
             }
             attr.frame = frame;
             pAttr = attr;

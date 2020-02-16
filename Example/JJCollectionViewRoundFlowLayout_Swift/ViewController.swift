@@ -32,7 +32,8 @@ class ViewController: UIViewController {
                               "CollectionView（单独设置某个 footer 底色））",
                               "CollectionView,无sections底色，cell左对齐",
                               "CollectionView,有sections底色，cell左对齐",
-                              "CollectionView,无sections底色，cell居中"
+                              "CollectionView,无sections底色，cell居中",
+                              "CollectionView,无sections底色，cell右对齐"
     ];
     
     override func viewDidLoad() {
@@ -176,6 +177,11 @@ extension ViewController : UITableViewDelegate   {
         case 14:
             let fourVC = FourViewController.init();
             fourVC.myAlignmentType = .Center
+            self.navigationController?.pushViewController(fourVC, animated: true);
+            return;
+        case 15:
+            let fourVC = FourViewController.init();
+            fourVC.myAlignmentType = .Right
             self.navigationController?.pushViewController(fourVC, animated: true);
             return;
         default:
