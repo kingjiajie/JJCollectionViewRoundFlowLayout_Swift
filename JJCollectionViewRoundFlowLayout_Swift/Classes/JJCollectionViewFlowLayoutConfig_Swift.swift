@@ -12,4 +12,5 @@ import UIKit
     case Left
     case Center
     case Right
+    case RightAndStartR
 }

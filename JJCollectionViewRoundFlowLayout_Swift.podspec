@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JJCollectionViewRoundFlowLayout_Swift'
-  s.version          = '2.2.0'
+  s.version          = '2.3.0'
   s.summary          = 'JJCollectionViewRoundFlowLayout_Swift可设置CollectionView的BackgroundColor，设置简单，可自定义背景颜色偏移、设置cell对齐方式等功能，.'
 
 # This description is used to generate tags and improve search results.

@@ -19,21 +19,22 @@ class ViewController: UIViewController {
         return tableview
     }()
     let myTitleArr : Array = ["CollectionView（包住section圆角）",//1
-                              "有Header&Footer，包Header,不包Footer",//2
-                              "有Header&Footer，包Header,包Footer",//3
-                              "有Header&Footer，不包Header,包Footer",//4
-                              "CollectionView（包住section圆角）(横向)",//5
-                              "CollectionView (横向 有H&F View)",//6
-                              "borderLine 包Section",//7
-                              "borderLine 包Section（带投影）",//8
-                              "BackgroundColor 底色（带投影）",//9
-                              "CollectionView（底色 圆角 分别不同颜色）",//10
-                              "CollectionView（单独设置某个 header 底色）",
-                              "CollectionView（单独设置某个 footer 底色））",
-                              "CollectionView,无sections底色，cell左对齐",
-                              "CollectionView,有sections底色，cell左对齐",
-                              "CollectionView,无sections底色，cell居中",
-                              "CollectionView,无sections底色，cell右对齐"
+        "有Header&Footer，包Header,不包Footer",//2
+        "有Header&Footer，包Header,包Footer",//3
+        "有Header&Footer，不包Header,包Footer",//4
+        "CollectionView（包住section圆角）(横向)",//5
+        "CollectionView (横向 有H&F View)",//6
+        "borderLine 包Section",//7
+        "borderLine 包Section（带投影）",//8
+        "BackgroundColor 底色（带投影）",//9
+        "CollectionView（底色 圆角 分别不同颜色）",//10
+        "CollectionView（单独设置某个 header 底色）",
+        "CollectionView（单独设置某个 footer 底色））",
+        "CollectionView,无sections底色，cell左对齐",
+        "CollectionView,有sections底色，cell左对齐",
+        "CollectionView,无sections底色，cell居中",
+        "CollectionView,无sections底色，cell右对齐",
+        "CollectionView,cell右对齐与cell右侧开始"
     ];
     
     override func viewDidLoad() {
@@ -182,6 +183,11 @@ extension ViewController : UITableViewDelegate   {
         case 15:
             let fourVC = FourViewController.init();
             fourVC.myAlignmentType = .Right
+            self.navigationController?.pushViewController(fourVC, animated: true);
+            return;
+        case 16:
+            let fourVC = FourViewController.init();
+            fourVC.myAlignmentType = .RightAndStartR;
             self.navigationController?.pushViewController(fourVC, animated: true);
             return;
         default:

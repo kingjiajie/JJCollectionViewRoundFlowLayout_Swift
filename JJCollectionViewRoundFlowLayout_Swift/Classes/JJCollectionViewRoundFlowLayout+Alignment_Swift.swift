@@ -61,6 +61,9 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                 reversedArray.reverse();
                 self.evaluatedCellSettingFrameByRightWithWithJJCollectionLayout(self, layoutAttributesAttrs: reversedArray);
                 break;
+            case .RightAndStartR:
+                self.evaluatedCellSettingFrameByRightWithWithJJCollectionLayout(self, layoutAttributesAttrs: calculateAttributesAttrsArr);
+                break;
             default:
                 break;
             }
