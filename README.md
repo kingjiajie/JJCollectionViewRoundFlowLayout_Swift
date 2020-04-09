@@ -278,7 +278,7 @@ func collectionView(collectionView: UICollectionView,layout: UICollectionViewLay
 
 ## Author
 
-kingjiajie, kingjiajie@sian.com
+kingjiajie, kingjiajie@sina.com
 
 ## License
 
