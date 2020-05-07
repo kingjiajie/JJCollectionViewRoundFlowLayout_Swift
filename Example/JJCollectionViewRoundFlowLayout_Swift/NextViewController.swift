@@ -176,7 +176,16 @@ extension NextViewController : JJCollectionViewDelegateRoundFlowLayout_Swift{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, configModelForSectionAtIndex section: Int) -> JJCollectionViewRoundConfigModel_Swift {
         let model = JJCollectionViewRoundConfigModel_Swift.init();
         
-        model.backgroundColor = UIColor.init(red: 233/255.0, green:233/255.0 ,blue:233/255.0,alpha:1.0)
+        
+        if #available(iOS 13.0, *) {
+            model.backgroundColor = UIColor.init { (traitCollection:UITraitCollection) -> UIColor in
+                return traitCollection.userInterfaceStyle == .dark ? UIColor.black : UIColor.init(red: 233/255.0, green:233/255.0 ,blue:233/255.0,alpha:1.0);
+            }
+        } else {
+            // Fallback on earlier versions
+            model.backgroundColor = UIColor.init(red: 233/255.0, green:233/255.0 ,blue:233/255.0,alpha:1.0)
+        }
+        
         model.cornerRadius = 10;
         
         if (self.isShowDifferentColor) {

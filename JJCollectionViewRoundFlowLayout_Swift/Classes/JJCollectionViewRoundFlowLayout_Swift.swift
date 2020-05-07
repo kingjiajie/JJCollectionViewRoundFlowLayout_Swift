@@ -10,20 +10,53 @@ import UIKit
 
 class JJCollectionReusableView_Swift: UICollectionReusableView {
     
+    var myCacheAttr : JJCollectionViewRoundLayoutAttributes_Swift = {
+        return JJCollectionViewRoundLayoutAttributes_Swift.init();
+    }()
+    
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
+        let attr = layoutAttributes as! JJCollectionViewRoundLayoutAttributes_Swift
+        myCacheAttr = attr;
+        self.toChangeCollectionReusableViewRoundInfo(myCacheAttr);
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection);
+        self.toChangeCollectionReusableViewRoundInfo(myCacheAttr);
+    }
+    
+    func toChangeCollectionReusableViewRoundInfo(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         let attr = layoutAttributes as! JJCollectionViewRoundLayoutAttributes_Swift
         if (attr.myConfigModel != nil) {
             let model = attr.myConfigModel!;
             let view = self;
-            view.layer.backgroundColor = model.backgroundColor?.cgColor;
-            view.layer.shadowColor = model.shadowColor?.cgColor;
+            
+            if #available(iOS 13.0, *) {
+                view.layer.backgroundColor = model.backgroundColor?.resolvedColor(with: self.traitCollection).cgColor
+            } else {
+                // Fallback on earlier versions
+                view.layer.backgroundColor = model.backgroundColor?.cgColor;
+            };
+            
+            if #available(iOS 13.0, *) {
+                view.layer.shadowColor = model.shadowColor?.resolvedColor(with: self.traitCollection).cgColor
+            } else {
+                // Fallback on earlier versions
+                view.layer.shadowColor = model.shadowColor?.cgColor;
+            };
             view.layer.shadowOffset = model.shadowOffset ?? CGSize.init(width: 0, height: 0);
             view.layer.shadowOpacity = model.shadowOpacity;
             view.layer.shadowRadius = model.shadowRadius;
             view.layer.cornerRadius = model.cornerRadius;
             view.layer.borderWidth = model.borderWidth;
-            view.layer.borderColor = model.borderColor?.cgColor;
+            
+            if #available(iOS 13.0, *) {
+                view.layer.borderColor = model.borderColor?.resolvedColor(with: self.traitCollection).cgColor
+            } else {
+                // Fallback on earlier versions
+                view.layer.borderColor = model.borderColor?.cgColor;
+            };
         }
     }
 }
