@@ -34,7 +34,8 @@ class ViewController: UIViewController {
         "CollectionView,有sections底色，cell左对齐",
         "CollectionView,无sections底色，cell居中",
         "CollectionView,无sections底色，cell右对齐",
-        "CollectionView,cell右对齐与cell右侧开始"
+        "CollectionView,cell右对齐与cell右侧开始",
+        "CollectionView,背景图点击事件响应"
     ];
     
     override func viewDidLoad() {
@@ -189,6 +190,10 @@ extension ViewController : UITableViewDelegate   {
             let fourVC = FourViewController.init();
             fourVC.myAlignmentType = .RightAndStartR;
             self.navigationController?.pushViewController(fourVC, animated: true);
+            return;
+        case 17:
+            let fifthly =  FifthlyViewController.init();
+            self.navigationController?.pushViewController(fifthly, animated: true);
             return;
         default:
             break;

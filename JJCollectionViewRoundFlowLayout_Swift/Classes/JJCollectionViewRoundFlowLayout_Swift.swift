@@ -59,6 +59,26 @@ class JJCollectionReusableView_Swift: UICollectionReusableView {
             };
         }
     }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if event?.type == UIEvent.EventType.touches {
+            self.decorationViewUserDidSelectEvent();
+        }
+    }
+    
+    func decorationViewUserDidSelectEvent() {
+        guard let collectionView = self.superview else {
+            return;
+        }
+        
+        if collectionView.isKind(of: UICollectionView.self) {
+            let myCollectionView = collectionView as! UICollectionView;
+            let delegate = myCollectionView.delegate as! JJCollectionViewDelegateRoundFlowLayout_Swift;
+            if delegate.responds(to: #selector(delegate.collectionView(collectionView:didSelectDecorationViewAtIndexPath:))) {
+                delegate .collectionView?(collectionView: myCollectionView, didSelectDecorationViewAtIndexPath: myCacheAttr.indexPath);
+            }
+        }
+    }
 }
 
 class JJCollectionViewRoundLayoutAttributes_Swift: UICollectionViewLayoutAttributes {
@@ -97,6 +117,12 @@ extension JJCollectionViewRoundFlowLayout_Swift{
     ///   - layout: layout description
     ///   - section: section description
     @objc optional func collectionView(collectionView:UICollectionView , layout:UICollectionViewLayout , isCalculateFooterViewIndex section : NSInteger) -> Bool;
+    
+    /// 背景图点击事件
+    /// - Parameters:
+    ///   - collectionView: collectionView description
+    ///   - indexPath: 点击背景图的indexPath
+    @objc optional func collectionView(collectionView:UICollectionView , didSelectDecorationViewAtIndexPath indexPath:IndexPath);
 }
 
 @objcMembers

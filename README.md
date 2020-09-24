@@ -8,7 +8,7 @@
 
  JJCollectionViewRoundFlowLayout_Swift是JJCollectionViewRoundFlowLayout（OC：https://github.com/kingjiajie/JJCollectionViewRoundFlowLayout ） 的Swift版本，JJCollectionViewRoundFlowLayout可设置CollectionView的BackgroundColor，可根据用户Cell个数计算背景图尺寸，可自定义是否包括计算CollectionViewHeaderView、CollectionViewFootererView或只计算Cells。设置简单，可自定义背景颜色偏移，设置显示方向（竖向、横向）显示,不同Section设置不同的背景颜色，可设置cell对齐方式。
 
-   可设置内容：
+   可设置内容：  
    1、collectionView section底色。  
    2、是否包含headerview。  
    3、是否包含footerview。  
@@ -21,7 +21,12 @@
    10、增加对不规则Cell大小的计算方式支持，支持对不规则Cell计算实际背景视图大小，默认不开启计算，如使用不规则计算需手动开启isCalculateTypeOpenIrregularitiesCell字段  
     11、新增对Cell的对齐模式进行设置，支持（居中对齐）--- V2.1.0  
     12、新增对Cell的对齐模式进行设置，支持（右对齐）--- V2.2.0  
-    13、新增对Cell的对齐模式进行设置，支持（右对齐和首个Cell右侧开始）---V2.3.0   
+    13、新增对Cell的对齐模式进行设置，支持（右对齐和首个Cell右侧开始）--- V2.3.0   
+    14、内部优化 --- V2.3.1  
+    15、增加对背景图的点击事件处理和控制，通过代理返回点击的背景图的IndexPath --- V2.4.0  
+
+
+    
     
    
    Swift版本地址：[GitHub地址](https://github.com/kingjiajie/JJCollectionViewRoundFlowLayout_Swift)
@@ -31,7 +36,8 @@
    
    ## 更新日志
    ---
-   * `2.3.1`:解决对暗黑模式的支持问题（感谢Whaiyan小伙伴发现了问题）。
+   * `2.4.0`:增加对背景图的点击事件处理和控制，通过代理返回点击的背景图的IndexPath。
+   - `2.3.1`:解决对暗黑模式的支持问题（感谢Whaiyan小伙伴发现了问题）。
    - `2.3.0`:新增对Cell的对齐模式进行设置，支持（右对齐和首个Cell右侧开始）。
    - `2.2.0`:新增支持设置Cell对齐模式（右对齐）。
    - `2.1.0`:新增支持设置Cell对齐模式（居中对齐）。
@@ -276,6 +282,16 @@ func collectionView(collectionView: UICollectionView,layout: UICollectionViewLay
     //layout.collectionCellAlignmentType = .RightAndStartR; //设置对齐方式(右对齐和首个Cell右侧开始）
 
 ```
+
+#### 增加对背景图的点击事件处理和控制，通过代理返回点击的背景图的IndexPath
+
+``` swift
+    func collectionView(collectionView: UICollectionView, didSelectDecorationViewAtIndexPath indexPath: IndexPath) {
+    let message = String.init(format: "section --- %ld \n row --- %ld", indexPath.section,indexPath.row)
+}
+
+```
+
 
 ## Author
 

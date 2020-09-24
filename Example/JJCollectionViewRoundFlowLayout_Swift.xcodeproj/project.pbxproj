@@ -14,6 +14,7 @@
 		042FEAAD238204E5000F73ED /* MyCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042FEAA8238204E5000F73ED /* MyCollectionReusableView.swift */; };
 		0434FE1D23BD98EE0094B247 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0434FE1C23BD98EE0094B247 /* ThirdViewController.swift */; };
 		043B0A6523E80C9900C2C6B4 /* FourViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043B0A6423E80C9900C2C6B4 /* FourViewController.swift */; };
+		0484A647251CF3610019A0FF /* FifthlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0484A646251CF3610019A0FF /* FifthlyViewController.swift */; };
 		04DC685423E95CC100488DFA /* MyLabelCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DC685323E95CC100488DFA /* MyLabelCollectionViewCell.swift */; };
 		37F3E3CC11D28F983A3FEE06 /* Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11512C0B1DF9F20F73A3765F /* Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 		042FEAA8238204E5000F73ED /* MyCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCollectionReusableView.swift; sourceTree = "<group>"; };
 		0434FE1C23BD98EE0094B247 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		043B0A6423E80C9900C2C6B4 /* FourViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourViewController.swift; sourceTree = "<group>"; };
+		0484A646251CF3610019A0FF /* FifthlyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FifthlyViewController.swift; sourceTree = "<group>"; };
 		04DC685323E95CC100488DFA /* MyLabelCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLabelCollectionViewCell.swift; sourceTree = "<group>"; };
 		11512C0B1DF9F20F73A3765F /* Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JJCollectionViewRoundFlowLayout_Swift_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CDE4D46CCB2623C8E330E6C /* Pods-JJCollectionViewRoundFlowLayout_Swift_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JJCollectionViewRoundFlowLayout_Swift_Example.debug.xcconfig"; path = "Target Support Files/Pods-JJCollectionViewRoundFlowLayout_Swift_Example/Pods-JJCollectionViewRoundFlowLayout_Swift_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				042FEAA6238204E5000F73ED /* SecondViewController.swift */,
 				0434FE1C23BD98EE0094B247 /* ThirdViewController.swift */,
 				043B0A6423E80C9900C2C6B4 /* FourViewController.swift */,
+				0484A646251CF3610019A0FF /* FifthlyViewController.swift */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -358,6 +361,7 @@
 				042FEAAD238204E5000F73ED /* MyCollectionReusableView.swift in Sources */,
 				042FEAAC238204E5000F73ED /* NextViewController.swift in Sources */,
 				042FEAA9238204E5000F73ED /* MyCollectionViewFlowLayout.swift in Sources */,
+				0484A647251CF3610019A0FF /* FifthlyViewController.swift in Sources */,
 				042FEAAA238204E5000F73ED /* MyCollectionViewCell.swift in Sources */,
 				042FEAAB238204E5000F73ED /* SecondViewController.swift in Sources */,
 				0434FE1D23BD98EE0094B247 /* ThirdViewController.swift in Sources */,
