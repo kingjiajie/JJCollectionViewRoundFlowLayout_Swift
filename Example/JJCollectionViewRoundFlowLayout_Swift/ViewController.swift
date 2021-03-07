@@ -35,7 +35,8 @@ class ViewController: UIViewController {
         "CollectionView,无sections底色，cell居中",
         "CollectionView,无sections底色，cell右对齐",
         "CollectionView,cell右对齐与cell右侧开始",
-        "CollectionView,背景图点击事件响应"
+        "CollectionView,背景图点击事件响应",
+        "有H&F，Cell为0，判断是否计算H&F"
     ];
     
     override func viewDidLoad() {
@@ -194,6 +195,13 @@ extension ViewController : UITableViewDelegate   {
         case 17:
             let fifthly =  FifthlyViewController.init();
             self.navigationController?.pushViewController(fifthly, animated: true);
+            return;
+        case 18:
+            let sixth = SixthViewController.init();
+            sixth.isHaveHeaderFooterView = true;
+            sixth.isRoundWithHeaerView = true;
+            sixth.isRoundWithFooterView = true;
+            self.navigationController?.pushViewController(sixth, animated: true);
             return;
         default:
             break;
