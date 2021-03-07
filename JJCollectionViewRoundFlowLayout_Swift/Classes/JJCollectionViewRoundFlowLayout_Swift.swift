@@ -118,6 +118,14 @@ extension JJCollectionViewRoundFlowLayout_Swift{
     ///   - section: section description
     @objc optional func collectionView(collectionView:UICollectionView , layout:UICollectionViewLayout , isCalculateFooterViewIndex section : NSInteger) -> Bool;
     
+    /// 当Cell个数为0时，是否允许进行计算（根据section判断是否单独计算，Cell个数为0时，会检测计算Header或Footer）
+    /// - Parameters:
+    ///   - collectionView: collectionView description
+    ///   - layout: layout description
+    ///   - section: section description
+    @objc optional func collectionView(collectionView:UICollectionView , layout:UICollectionViewLayout , isCanCalculateWhenRowEmptyWithSection section : NSInteger) -> Bool;
+    
+    
     /// 背景图点击事件
     /// - Parameters:
     ///   - collectionView: collectionView description
@@ -140,6 +148,13 @@ open class JJCollectionViewRoundFlowLayout_Swift: UICollectionViewFlowLayout {
     //是否使用不规则Cell大小的计算方式(若Cell的大小是相同固定大小，则无需开启该方法)，默认false
     open var isCalculateTypeOpenIrregularitiesCell : Bool = false
     
+    /**************************************************************************************/
+    /// 当Cell个数为0时，是否允许进行计算（开启后，Cell个数为0时，会检测计算Header或Footer）
+    /// 注意！！！是否计算Header或Footer，会根据设置的isCalculateHeader、isCalculateFooter和对应代理方法进行判断！！！请注意！！！
+    ///（若实现collectionView:layout:isCanCalculateWhenRowEmptyWithSection:）该字段不起作用
+    /// 注意！！！！！！ 在使用该功能的时候，请自行检测和处理sectionInset的偏移量，Cell无数据时，有header&footer，设置了的sectionInset还是生效的，底色在计算时候会进行sectionInset相关的偏移处理。
+    /**************************************************************************************/
+    open var isCanCalculateWhenRowEmpty : Bool = false
     
     //自定义Attr数组
     var decorationViewAttrs : [UICollectionViewLayoutAttributes] = {
@@ -174,29 +189,41 @@ extension JJCollectionViewRoundFlowLayout_Swift{
         
         for section in 0..<sections {
             let numberOfItems = collectionView?.numberOfItems(inSection: section);
-            if numberOfItems != nil && numberOfItems! > 0 {
+            
+            var firstFrame = CGRect.null;
+            if numberOfItems != nil && numberOfItems! > 0  {
                 let firstAttr = layoutAttributesForItem(at: IndexPath.init(row: 0, section: section))
-                var firstFrame = firstAttr!.frame;
-                
-                //判断是否计算headerview
-                var isCalculateHeaderView = false;
-                if delegate.responds(to: #selector(delegate.collectionView(collectionView:layout:isCalculateHeaderViewIndex:))) {
-                    isCalculateHeaderView = delegate.collectionView!(collectionView: self.collectionView!, layout: self, isCalculateHeaderViewIndex: section);
-                }else{
-                    isCalculateHeaderView = self.isCalculateHeader;
+                firstFrame = firstAttr!.frame;
+            } else if delegate.responds(to: #selector(delegate.collectionView(collectionView:layout:isCanCalculateWhenRowEmptyWithSection:))) {
+                //如果没有设置当Cell个数为0时，实现了代理，执行代理方法判断section是否进行计算
+                if !delegate.collectionView!(collectionView: self.collectionView!, layout: self, isCanCalculateWhenRowEmptyWithSection: section) {
+                    continue;
                 }
-                
-                if isCalculateHeaderView {
-                    //headerView
-                    let headerAttr = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath.init(row: 0, section: section))
-                    if headerAttr != nil &&
-                        (headerAttr?.frame.size.width != 0 ||
-                            headerAttr?.frame.size.height != 0){
-                        firstFrame = headerAttr!.frame;
-                    }else{
-                        var rect = firstFrame;
+            }else if(!isCanCalculateWhenRowEmpty) {
+                //如果没有设置当Cell个数为0时，进行是否计算的字段
+                continue;
+            }
+                        
+            //判断是否计算headerview
+            var isCalculateHeaderView = false;
+            if delegate.responds(to: #selector(delegate.collectionView(collectionView:layout:isCalculateHeaderViewIndex:))) {
+                isCalculateHeaderView = delegate.collectionView!(collectionView: self.collectionView!, layout: self, isCalculateHeaderViewIndex: section);
+            }else{
+                isCalculateHeaderView = self.isCalculateHeader;
+            }
+            
+            if isCalculateHeaderView {
+                //headerView
+                let headerAttr = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath.init(row: 0, section: section))
+                if headerAttr != nil &&
+                    (headerAttr?.frame.size.width != 0 ||
+                        headerAttr?.frame.size.height != 0){
+                    firstFrame = headerAttr!.frame;
+                }else{
+                    var rect = firstFrame;
+                    if !rect.isNull {
                         if isCalculateTypeOpenIrregularitiesCell {
-                            rect = JJCollectionViewFlowLayoutUtils_Swift.calculateIrregularitiesCellByMinTopFrameWithLayout(self, section: section, numberOfItems: numberOfItems!, defaultFrame: firstFrame);
+                            rect = JJCollectionViewFlowLayoutUtils_Swift.calculateIrregularitiesCellByMinTopFrameWithLayout(self, section: section, numberOfItems: numberOfItems!, defaultFrame: rect);
                         }
                         
                         firstFrame = self.scrollDirection == .vertical ?
@@ -208,37 +235,43 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                                         y: rect.origin.y,
                                         width: rect.size.width,
                                         height: collectionView!.bounds.size.height);
-                        
                     }
-                }else{
-                    //不计算headerview的情况
-                    if isCalculateTypeOpenIrregularitiesCell {
+                }
+            }else{
+                //不计算headerview的情况
+                if isCalculateTypeOpenIrregularitiesCell {
+                    if !firstFrame.isNull {
                         firstFrame = JJCollectionViewFlowLayoutUtils_Swift.calculateIrregularitiesCellByMinTopFrameWithLayout(self, section: section, numberOfItems: numberOfItems!, defaultFrame: firstFrame);
                     }
                 }
-                
+            }
+            
+            var lastFrame = CGRect.null;
+            if numberOfItems != nil && numberOfItems! > 0  {
                 let lastAttr = layoutAttributesForItem(at: IndexPath.init(row:(numberOfItems! - 1), section: section))
-                var lastFrame = lastAttr!.frame;
-                
-                //判断是否计算headerview
-                var isCalculateFooterView = false;
-                if delegate.responds(to: #selector(delegate.collectionView(collectionView:layout:isCalculateFooterViewIndex:))) {
-                    isCalculateFooterView = delegate.collectionView!(collectionView: self.collectionView!, layout: self, isCalculateFooterViewIndex: section);
+                lastFrame = lastAttr!.frame;
+            }
+            
+            //判断是否计算headerview
+            var isCalculateFooterView = false;
+            if delegate.responds(to: #selector(delegate.collectionView(collectionView:layout:isCalculateFooterViewIndex:))) {
+                isCalculateFooterView = delegate.collectionView!(collectionView: self.collectionView!, layout: self, isCalculateFooterViewIndex: section);
+            }else{
+                isCalculateFooterView = self.isCalculateFooter;
+            }
+            
+            if isCalculateFooterView {
+                //footerView
+                let footerAttr = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: IndexPath.init(row: 0, section: section))
+                if footerAttr != nil ||
+                    (footerAttr?.frame.size.width != 0 ||
+                        footerAttr?.frame.size.height != 0){
+                    lastFrame = footerAttr!.frame;
                 }else{
-                    isCalculateFooterView = self.isCalculateFooter;
-                }
-                
-                if isCalculateFooterView {
-                    //footerView
-                    let footerAttr = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: IndexPath.init(row: 0, section: section))
-                    if footerAttr != nil ||
-                        (footerAttr?.frame.size.width != 0 ||
-                            footerAttr?.frame.size.height != 0){
-                        lastFrame = footerAttr!.frame;
-                    }else{
-                        var rect = lastFrame;
+                    var rect = lastFrame;
+                    if !rect.isNull {
                         if self.isCalculateTypeOpenIrregularitiesCell {
-                            rect = JJCollectionViewFlowLayoutUtils_Swift.calculateIrregularitiesCellByMaxBottomFrameWithLayout(self, section: section, numberOfItems: numberOfItems!, defaultFrame: lastFrame);
+                            rect = JJCollectionViewFlowLayoutUtils_Swift.calculateIrregularitiesCellByMaxBottomFrameWithLayout(self, section: section, numberOfItems: numberOfItems!, defaultFrame: rect);
                         }
                         lastFrame = self.scrollDirection == .vertical ?
                             CGRect.init(x: rect.origin.x,
@@ -249,126 +282,137 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                                         y: rect.origin.y,
                                         width: rect.size.width,
                                         height: collectionView!.bounds.size.height)
-                        
                     }
-                }else{
-                    //不计算footerView的情况
-                    if self.isCalculateTypeOpenIrregularitiesCell {
+                }
+            }else{
+                //不计算footerView的情况
+                if self.isCalculateTypeOpenIrregularitiesCell {
+                    if !lastFrame.isNull {
                         lastFrame = JJCollectionViewFlowLayoutUtils_Swift.calculateIrregularitiesCellByMaxBottomFrameWithLayout(self, section: section, numberOfItems: numberOfItems!, defaultFrame: lastFrame);
                     }
                 }
-                
-                //获取sectionInset
-                var sectionInset = self.sectionInset
-                if (delegate.responds(to: #selector(delegate.collectionView(_:layout:insetForSectionAt:)))) {
-                    let inset = delegate.collectionView!(self.collectionView!, layout: self, insetForSectionAt: section)
-                    if inset != sectionInset {
-                        sectionInset = inset
-                    }
+            }
+            
+            //获取sectionInset
+            var sectionInset = self.sectionInset
+            if (delegate.responds(to: #selector(delegate.collectionView(_:layout:insetForSectionAt:)))) {
+                let inset = delegate.collectionView!(self.collectionView!, layout: self, insetForSectionAt: section)
+                if inset != sectionInset {
+                    sectionInset = inset
                 }
+            }
+            
+            var userCustomSectionInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+            if delegate.responds(to: #selector(delegate.collectionView(_:layout:borderEdgeInsertsForSectionAtIndex:))) {
+                //检测是否实现了该方法，进行赋值
+                userCustomSectionInset = delegate.collectionView!(self.collectionView!, layout: self, borderEdgeInsertsForSectionAtIndex: section)
+            }
+            
+            var sectionFrame = CGRect.null;
+            if !firstFrame.isNull && !lastFrame.isNull {
+                sectionFrame = firstFrame.union(lastFrame);
+            }else if(!firstFrame.isNull) {
+                sectionFrame = firstFrame.union(firstFrame);
+            }else if(!lastFrame.isNull) {
+                sectionFrame = lastFrame.union(lastFrame);
+            }
                 
-                var userCustomSectionInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
-                if delegate.responds(to: #selector(delegate.collectionView(_:layout:borderEdgeInsertsForSectionAtIndex:))) {
-                    //检测是否实现了该方法，进行赋值
-                    userCustomSectionInset = delegate.collectionView!(self.collectionView!, layout: self, borderEdgeInsertsForSectionAtIndex: section)
-                }
-                
-                var sectionFrame = firstFrame.union(lastFrame)
-                if !isCalculateHeaderView && !isCalculateFooterView{
-                    //都没有headerView&footerView
-                    sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset)
-                }else{
-                    if (isCalculateHeaderView && !isCalculateFooterView) {
-                        //headerView
-                        let headerAttr = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath.init(row: 0, section: section))
-                        //判断是否有headerview
-                        if headerAttr != nil &&
-                            (headerAttr?.frame.size.width != 0 || headerAttr?.frame.size.height != 0){
-                            if self.scrollDirection == UICollectionView.ScrollDirection.horizontal {
-                                //判断包含headerview, left位置已经计算在内，不需要补偏移
-                                sectionFrame.size.width += sectionInset.right
-                                
-                                //减去系统adjustInset的top
-                                if #available(iOS 11.0, *) {
-                                    sectionFrame.size.height = self.collectionView!.frame.size.height - self.collectionView!.adjustedContentInset.top
-                                }else{
-                                    sectionFrame.size.height = self.collectionView!.frame.size.height - abs(self.collectionView!.contentOffset.y)/*适配iOS11以下*/;
-                                }
-                            }else{
-                                //判断包含headerview, top位置已经计算在内，不需要补偏移
-                                sectionFrame.size.height += sectionInset.bottom;
-                            }
-                        }else{
-                            sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset)
-                        }
-                    }else if(!isCalculateHeaderView && isCalculateFooterView){
-                        //footerView
-                        let footerAttr = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: IndexPath.init(row: 0, section: section))
-                        if footerAttr != nil &&
-                            (footerAttr?.frame.size.width != 0 || footerAttr?.frame.size.height != 0) {
-                            if self.scrollDirection == UICollectionView.ScrollDirection.horizontal {
-                                //判断包含footerView, right位置已经计算在内，不需要补偏移
-                                //(需要补充x偏移)
-                                sectionFrame.origin.x -= sectionInset.left;
-                                sectionFrame.size.width += sectionInset.left;
-                                
-                                //减去系统adjustInset的top
-                                if #available(iOS 11.0, *) {
-                                    sectionFrame.size.height = self.collectionView!.frame.size.height - self.collectionView!.adjustedContentInset.top
-                                }else{
-                                    sectionFrame.size.height = self.collectionView!.frame.size.height - abs(self.collectionView!.contentOffset.y)/*适配iOS11以下*/;
-                                }
-                            }else{
-                                //判断包含footerView, bottom位置已经计算在内，不需要补偏移
-                                //(需要补充y偏移)
-                                sectionFrame.origin.y -= sectionInset.top
-                                sectionFrame.size.width = self.collectionView!.frame.size.width
-                                sectionFrame.size.height += sectionInset.top
-                            }
-                        }else{
-                            sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset);
-                        }
-                    }else{
-                        //headerView
-                        let headerAttr = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath.init(row: 0, section: section))
-                        
-                        //footerView
-                        let footerAttr = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: IndexPath.init(row: 0, section: section))
-                        
-                        if headerAttr != nil &&
-                            footerAttr != nil &&
-                            (headerAttr?.frame.size.width != 0 || headerAttr?.frame.size.height != 0) &&
-                            (footerAttr?.frame.size.width != 0 || footerAttr?.frame.size.height != 0){
-                            //都有headerview和footerview就不用计算了
-                        }else{
-                            sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset);
-                        }
-                    }
-                }
-                
-                sectionFrame.origin.x += userCustomSectionInset.left;
-                sectionFrame.origin.y += userCustomSectionInset.top;
-                if self.scrollDirection == UICollectionView.ScrollDirection.horizontal {
-                    sectionFrame.size.width -= (userCustomSectionInset.left + userCustomSectionInset.right);
-                    sectionFrame.size.height -= (userCustomSectionInset.top + userCustomSectionInset.bottom);
-                }else{
-                    sectionFrame.size.width -= (userCustomSectionInset.left + userCustomSectionInset.right);
-                    sectionFrame.size.height -= (userCustomSectionInset.top + userCustomSectionInset.bottom);
-                }
-                
-                //2. 定义
-                let attr = JJCollectionViewRoundLayoutAttributes_Swift.init(forDecorationViewOfKind:JJCollectionViewRoundFlowLayout_Swift.JJCollectionViewRoundSectionSwift, with: IndexPath.init(row: 0, section: section))
-                attr.frame = sectionFrame
-                attr.zIndex = -1
-                attr.borderEdgeInsets = userCustomSectionInset
-                if delegate.responds(to: #selector(delegate.collectionView(_:layout:configModelForSectionAtIndex:))) {
-                    attr.myConfigModel = delegate.collectionView(self.collectionView!, layout: self, configModelForSectionAtIndex: section)
-                }
-                self.decorationViewAttrs.append(attr)
-                
-            }else{
+            if sectionFrame.isNull {
                 continue;
             }
+            
+            if !isCalculateHeaderView && !isCalculateFooterView{
+                //都没有headerView&footerView
+                sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset)
+            }else{
+                if (isCalculateHeaderView && !isCalculateFooterView) {
+                    //headerView
+                    let headerAttr = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath.init(row: 0, section: section))
+                    //判断是否有headerview
+                    if headerAttr != nil &&
+                        (headerAttr?.frame.size.width != 0 || headerAttr?.frame.size.height != 0){
+                        if self.scrollDirection == UICollectionView.ScrollDirection.horizontal {
+                            //判断包含headerview, left位置已经计算在内，不需要补偏移
+                            sectionFrame.size.width += sectionInset.right
+                            
+                            //减去系统adjustInset的top
+                            if #available(iOS 11.0, *) {
+                                sectionFrame.size.height = self.collectionView!.frame.size.height - self.collectionView!.adjustedContentInset.top
+                            }else{
+                                sectionFrame.size.height = self.collectionView!.frame.size.height - abs(self.collectionView!.contentOffset.y)/*适配iOS11以下*/;
+                            }
+                        }else{
+                            //判断包含headerview, top位置已经计算在内，不需要补偏移
+                            sectionFrame.size.height += sectionInset.bottom;
+                        }
+                    }else{
+                        sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset)
+                    }
+                }else if(!isCalculateHeaderView && isCalculateFooterView){
+                    //footerView
+                    let footerAttr = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: IndexPath.init(row: 0, section: section))
+                    if footerAttr != nil &&
+                        (footerAttr?.frame.size.width != 0 || footerAttr?.frame.size.height != 0) {
+                        if self.scrollDirection == UICollectionView.ScrollDirection.horizontal {
+                            //判断包含footerView, right位置已经计算在内，不需要补偏移
+                            //(需要补充x偏移)
+                            sectionFrame.origin.x -= sectionInset.left;
+                            sectionFrame.size.width += sectionInset.left;
+                            
+                            //减去系统adjustInset的top
+                            if #available(iOS 11.0, *) {
+                                sectionFrame.size.height = self.collectionView!.frame.size.height - self.collectionView!.adjustedContentInset.top
+                            }else{
+                                sectionFrame.size.height = self.collectionView!.frame.size.height - abs(self.collectionView!.contentOffset.y)/*适配iOS11以下*/;
+                            }
+                        }else{
+                            //判断包含footerView, bottom位置已经计算在内，不需要补偏移
+                            //(需要补充y偏移)
+                            sectionFrame.origin.y -= sectionInset.top
+                            sectionFrame.size.width = self.collectionView!.frame.size.width
+                            sectionFrame.size.height += sectionInset.top
+                        }
+                    }else{
+                        sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset);
+                    }
+                }else{
+                    //headerView
+                    let headerAttr = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath.init(row: 0, section: section))
+                    
+                    //footerView
+                    let footerAttr = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: IndexPath.init(row: 0, section: section))
+                    
+                    if headerAttr != nil &&
+                        footerAttr != nil &&
+                        (headerAttr?.frame.size.width != 0 || headerAttr?.frame.size.height != 0) &&
+                        (footerAttr?.frame.size.width != 0 || footerAttr?.frame.size.height != 0){
+                        //都有headerview和footerview就不用计算了
+                    }else{
+                        sectionFrame = self.calculateDefaultFrameWithSectionFrame(sectionFrame, sectionInset: sectionInset);
+                    }
+                }
+            }
+            
+            sectionFrame.origin.x += userCustomSectionInset.left;
+            sectionFrame.origin.y += userCustomSectionInset.top;
+            if self.scrollDirection == UICollectionView.ScrollDirection.horizontal {
+                sectionFrame.size.width -= (userCustomSectionInset.left + userCustomSectionInset.right);
+                sectionFrame.size.height -= (userCustomSectionInset.top + userCustomSectionInset.bottom);
+            }else{
+                sectionFrame.size.width -= (userCustomSectionInset.left + userCustomSectionInset.right);
+                sectionFrame.size.height -= (userCustomSectionInset.top + userCustomSectionInset.bottom);
+            }
+            
+            //2. 定义
+            let attr = JJCollectionViewRoundLayoutAttributes_Swift.init(forDecorationViewOfKind:JJCollectionViewRoundFlowLayout_Swift.JJCollectionViewRoundSectionSwift, with: IndexPath.init(row: 0, section: section))
+            attr.frame = sectionFrame
+            attr.zIndex = -1
+            attr.borderEdgeInsets = userCustomSectionInset
+            if delegate.responds(to: #selector(delegate.collectionView(_:layout:configModelForSectionAtIndex:))) {
+                attr.myConfigModel = delegate.collectionView(self.collectionView!, layout: self, configModelForSectionAtIndex: section)
+            }
+            self.decorationViewAttrs.append(attr)
+            
         }
     }
 }
