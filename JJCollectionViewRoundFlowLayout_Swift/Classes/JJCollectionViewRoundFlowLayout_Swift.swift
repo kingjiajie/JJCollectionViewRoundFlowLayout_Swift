@@ -217,7 +217,7 @@ extension JJCollectionViewRoundFlowLayout_Swift{
                 let headerAttr = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath.init(row: 0, section: section))
                 if headerAttr != nil &&
                     (headerAttr?.frame.size.width != 0 ||
-                        headerAttr?.frame.size.height != 0){
+                     headerAttr?.frame.size.height != 0) {
                     firstFrame = headerAttr!.frame;
                 }else{
                     var rect = firstFrame;
@@ -263,9 +263,9 @@ extension JJCollectionViewRoundFlowLayout_Swift{
             if isCalculateFooterView {
                 //footerView
                 let footerAttr = layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: IndexPath.init(row: 0, section: section))
-                if footerAttr != nil ||
+                if footerAttr != nil &&
                     (footerAttr?.frame.size.width != 0 ||
-                        footerAttr?.frame.size.height != 0){
+                     footerAttr?.frame.size.height != 0) {
                     lastFrame = footerAttr!.frame;
                 }else{
                     var rect = lastFrame;
